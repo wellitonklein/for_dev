@@ -108,5 +108,16 @@ void main() {
       // assert
       expect(response, null);
     });
+
+    test('should return null if POST returns 204', () async {
+      // arrange
+      mockResponse(statusCode: 204);
+
+      // act
+      final response = await sut.request(url: url, method: 'POST');
+
+      // assert
+      expect(response, null);
+    });
   });
 }
