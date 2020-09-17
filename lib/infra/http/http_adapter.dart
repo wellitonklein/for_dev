@@ -26,6 +26,10 @@ class HttpAdapter implements IHttpClient {
       headers: headers,
       body: jsonBody,
     );
+    return _handleResponse(response);
+  }
+
+  Map _handleResponse(Response response) {
     if (response.statusCode == 204) {
       return null;
     }
