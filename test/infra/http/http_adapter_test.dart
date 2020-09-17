@@ -29,7 +29,7 @@ class HttpAdapter implements IHttpClient {
       headers: headers,
       body: jsonBody,
     );
-    return jsonDecode(response.body);
+    return response.body.isEmpty ? null : jsonDecode(response.body);
   }
 }
 
@@ -102,6 +102,17 @@ void main() {
 
       // assert
       expect(response, {'any_key': 'any_value'});
+    });
+
+    test('should return null if POST returns 200 with no data', () async {
+      // arrange
+      when(client.post(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => Response('', 200));
+      // act
+      final response = await sut.request(url: url, method: 'POST');
+
+      // assert
+      expect(response, null);
     });
   });
 }
