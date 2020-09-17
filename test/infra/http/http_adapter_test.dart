@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:meta/meta.dart';
 
+import 'package:for_dev/data/http/http.dart';
 import 'package:for_dev/infra/http/http.dart';
 
 class ClientSpy extends Mock implements Client {}
@@ -102,6 +103,17 @@ void main() {
 
       // assert
       expect(response, null);
+    });
+
+    test('should return BadRequestError if POST returns 400', () async {
+      // arrange
+      mockResponse(statusCode: 400);
+
+      // act
+      final future = sut.request(url: url, method: 'POST');
+
+      // assert
+      expect(future, throwsA(HttpError.badRequest));
     });
   });
 }
