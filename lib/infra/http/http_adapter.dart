@@ -22,12 +22,16 @@ class HttpAdapter implements IHttpClient {
     final jsonBody =
         (body != null && body.isNotEmpty) ? jsonEncode(body) : null;
     var response = Response('', 500);
-    if (method == 'POST') {
-      response = await client.post(
-        url,
-        headers: headers,
-        body: jsonBody,
-      );
+    try {
+      if (method == 'POST') {
+        response = await client.post(
+          url,
+          headers: headers,
+          body: jsonBody,
+        );
+      }
+    } catch (_) {
+      throw HttpError.serverError;
     }
 
     return _handleResponse(response);
