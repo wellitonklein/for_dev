@@ -45,6 +45,9 @@ class HttpAdapter implements IHttpClient {
     if (response.statusCode == 403) {
       throw HttpError.forbidden;
     }
+    if (response.statusCode == 404) {
+      throw HttpError.notFound;
+    }
     throw HttpError.serverError;
   }
 }
