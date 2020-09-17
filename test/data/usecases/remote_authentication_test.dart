@@ -30,12 +30,18 @@ abstract class IHttpClient {
 class HttpClientSpy extends Mock implements IHttpClient {}
 
 void main() {
-  test('should call HttpClient with correct value', () async {
-    // arrange
-    final httpClient = HttpClientSpy();
-    final url = faker.internet.httpUrl();
-    final sut = RemoteAuthentication(httpClient: httpClient, url: url);
+  RemoteAuthentication sut;
+  IHttpClient httpClient;
+  String url;
 
+  setUp(() {
+    // arrange
+    httpClient = HttpClientSpy();
+    url = faker.internet.httpUrl();
+    sut = RemoteAuthentication(httpClient: httpClient, url: url);
+  });
+
+  test('should call HttpClient with correct value', () async {
     // action
     await sut.auth();
 
