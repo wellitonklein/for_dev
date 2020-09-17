@@ -3,6 +3,8 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'package:for_dev/domain/usecases/usecases.dart';
+import 'package:for_dev/domain/helpers/helpers.dart';
+
 import 'package:for_dev/data/http/http.dart';
 import 'package:for_dev/data/usecases/usecases.dart';
 
@@ -34,5 +36,24 @@ void main() {
       method: 'POST',
       body: {'email': params.email, 'password': params.secret},
     ));
+  });
+
+  test('should throw UnexpectedError if HttpClient returns 400', () async {
+    // arrange
+    when(httpClient.request(
+            url: anyNamed('url'),
+            method: anyNamed('method'),
+            body: anyNamed('body')))
+        .thenThrow(HttpError.badRequest);
+
+    // act
+    final params = AuthenticationParams(
+      email: faker.internet.email(),
+      secret: faker.internet.password(),
+    );
+    final future = sut.auth(params: params);
+
+    // assert
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
