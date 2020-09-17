@@ -29,6 +29,9 @@ class HttpAdapter implements IHttpClient {
       headers: headers,
       body: jsonBody,
     );
+    if (response.statusCode == 204) {
+      return null;
+    }
     return response.body.isEmpty ? null : jsonDecode(response.body);
   }
 }
@@ -112,6 +115,17 @@ void main() {
     test('should return null if POST returns 204', () async {
       // arrange
       mockResponse(statusCode: 204);
+
+      // act
+      final response = await sut.request(url: url, method: 'POST');
+
+      // assert
+      expect(response, null);
+    });
+
+    test('should return null if POST returns 204 with data', () async {
+      // arrange
+      mockResponse(statusCode: 204, body: '{"any_key":"any_value"}');
 
       // act
       final response = await sut.request(url: url, method: 'POST');
