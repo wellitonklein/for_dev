@@ -36,7 +36,9 @@ class HttpAdapter implements IHttpClient {
     if (response.statusCode == 204) {
       return null;
     }
-
-    throw HttpError.badRequest;
+    if (response.statusCode == 400) {
+      throw HttpError.badRequest;
+    }
+    throw HttpError.serverError;
   }
 }
