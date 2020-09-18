@@ -48,7 +48,7 @@ class AppWidget extends StatelessWidget {
           ),
         ),
       ),
-      home: LoginPage(),
+      home: LoginPage(presenter: null),
     );
   }
 }
