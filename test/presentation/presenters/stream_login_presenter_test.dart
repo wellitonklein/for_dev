@@ -1,16 +1,10 @@
 import 'dart:async';
 
 import 'package:faker/faker.dart';
+import 'package:for_dev/presentation/dependencies/validation_interface.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:meta/meta.dart';
-
-abstract class IValidation {
-  String validate({
-    @required String field,
-    @required String value,
-  });
-}
 
 class LoginState {
   String emailError;
