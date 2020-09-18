@@ -4,12 +4,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:for_dev/ui/pages/pages.dart';
 
 void main() {
+  Future<void> loadPage(WidgetTester tester) async {
+    final loginPage = MaterialApp(home: LoginPage());
+    await tester.pumpWidget(loginPage);
+  }
+
   testWidgets(
     'should load with correct initial state',
     (WidgetTester tester) async {
       // arrange
-      final loginPage = MaterialApp(home: LoginPage());
-      await tester.pumpWidget(loginPage);
+      await loadPage(tester);
 
       // assert
       final emailTextChildren = find.descendant(
