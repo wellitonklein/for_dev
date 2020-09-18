@@ -19,7 +19,7 @@ class StreamLoginPresenter {
   });
 
   Stream<String> get emailErrorStream =>
-      _controller.stream.map((state) => state.emailError);
+      _controller.stream.map((state) => state.emailError).distinct();
 
   void validateEmail(String value) {
     _state.emailError = validation.validate(field: 'email', value: value);
