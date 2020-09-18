@@ -25,12 +25,17 @@ class StreamLoginPresenter {
 }
 
 void main() {
-  test('should call Validation with correct email', () async {
-    // arrange
-    final validation = ValidationSpy();
-    final sut = StreamLoginPresenter(validation: validation);
-    final email = faker.internet.email();
+  ValidationSpy validation;
+  StreamLoginPresenter sut;
+  String email;
 
+  setUp(() {
+    validation = ValidationSpy();
+    sut = StreamLoginPresenter(validation: validation);
+    email = faker.internet.email();
+  });
+
+  test('should call Validation with correct email', () async {
     // act
     sut.validateEmail(email);
 
