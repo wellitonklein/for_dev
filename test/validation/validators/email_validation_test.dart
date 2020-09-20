@@ -10,7 +10,11 @@ class EmailValidation implements IFieldValidation {
 
   @override
   String validate(String value) {
-    return null;
+    final regex = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    );
+    final isValid = value?.isNotEmpty != true || regex.hasMatch(value);
+    return !isValid ? 'Campo inválido.' : null;
   }
 }
 
@@ -40,5 +44,12 @@ void main() {
     final error = sut.validate('welliton.fokushima@gmail.com');
     // assert
     expect(error, null);
+  });
+
+  test('should return null if email is invalid', () async {
+    // act
+    final error = sut.validate('welliton.fokushima');
+    // assert
+    expect(error, 'Campo inválido.');
   });
 }
