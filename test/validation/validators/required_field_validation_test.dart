@@ -14,7 +14,7 @@ class RequiredFieldValidation implements IFieldValidation {
 
   @override
   String validate(String value) {
-    return null;
+    return value.isEmpty ? 'Campo obrigatório' : null;
   }
 }
 
@@ -26,5 +26,14 @@ void main() {
     final error = sut.validate('any_value');
     // assert
     expect(error, null);
+  });
+
+  test('should return error if value is empty', () async {
+    // arrange
+    final sut = RequiredFieldValidation(field: 'any_field');
+    // act
+    final error = sut.validate('');
+    // assert
+    expect(error, 'Campo obrigatório');
   });
 }
