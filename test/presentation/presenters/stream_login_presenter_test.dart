@@ -79,4 +79,22 @@ void main() {
     // assert
     verify(validation.validate(field: 'password', value: password)).called(1);
   });
+
+  test('should emit password error if validation fails', () async {
+    // arrange
+    final messageError = 'error';
+    mockValidation(value: messageError);
+
+    // assert
+    sut.passwordErrorStream.listen(
+      expectAsync1((error) => expect(error, messageError)),
+    );
+    sut.isFormValidStream.listen(
+      expectAsync1((isValid) => expect(isValid, false)),
+    );
+
+    // act
+    sut.validatePassword(password);
+    sut.validatePassword(password);
+  });
 }
