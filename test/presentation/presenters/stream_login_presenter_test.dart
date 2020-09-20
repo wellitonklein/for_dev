@@ -12,6 +12,7 @@ void main() {
   StreamLoginPresenter sut;
   String email;
   String password;
+  final messageError = 'error';
 
   PostExpectation mockValidationCall(String field) => when(
         validation.validate(
@@ -42,7 +43,6 @@ void main() {
 
   test('should emit email error if validation fails', () async {
     // arrange
-    final messageError = 'error';
     mockValidation(value: messageError);
 
     // assert
@@ -82,7 +82,6 @@ void main() {
 
   test('should emit password error if validation fails', () async {
     // arrange
-    final messageError = 'error';
     mockValidation(value: messageError);
 
     // assert
@@ -109,6 +108,26 @@ void main() {
 
     // act
     sut.validatePassword(password);
+    sut.validatePassword(password);
+  });
+
+  test('should emit null if validation succes', () async {
+    // arrange
+    mockValidation(field: 'email', value: messageError);
+
+    // assert
+    sut.emailErrorStream.listen(
+      expectAsync1((error) => expect(error, messageError)),
+    );
+    sut.passwordErrorStream.listen(
+      expectAsync1((error) => expect(error, null)),
+    );
+    sut.isFormValidStream.listen(
+      expectAsync1((isValid) => expect(isValid, false)),
+    );
+
+    // act
+    sut.validateEmail(email);
     sut.validatePassword(password);
   });
 }
