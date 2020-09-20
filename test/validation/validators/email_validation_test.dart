@@ -1,22 +1,6 @@
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
 
-import 'package:for_dev/validation/dependencies/dependencies.dart';
-
-class EmailValidation implements IFieldValidation {
-  final String field;
-
-  EmailValidation({@required this.field});
-
-  @override
-  String validate(String value) {
-    final regex = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-    );
-    final isValid = value?.isNotEmpty != true || regex.hasMatch(value);
-    return !isValid ? 'Campo inválido.' : null;
-  }
-}
+import 'package:for_dev/validation/validators/validators.dart';
 
 void main() {
   EmailValidation sut;
