@@ -1,29 +1,8 @@
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
 
-import 'package:for_dev/presentation/dependencies/dependencies.dart';
 import 'package:for_dev/validation/dependencies/dependencies.dart';
-
-class ValidationComposite implements IValidation {
-  final List<IFieldValidation> validations;
-
-  ValidationComposite({@required this.validations});
-
-  String validate({String field, String value}) {
-    String error;
-
-    for (final validation in validations.where((v) => v.field == field)) {
-      error = validation.validate(value);
-
-      if (error?.isNotEmpty == true) {
-        return error;
-      }
-    }
-
-    return error;
-  }
-}
+import 'package:for_dev/validation/validators/validators.dart';
 
 class FieldValidationSpy extends Mock implements IFieldValidation {}
 
