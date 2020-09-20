@@ -242,6 +242,20 @@ void main() {
     await sut.auth();
   });
 
+  test('should change page on success', () async {
+    // arrange
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+
+    sut.navigateToStream
+        .listen(expectAsync1((page) => expect(page, '/surveys')));
+
+    // act
+    await sut.auth();
+
+    //
+  });
+
   test('should emit correct events on UnexpectedError', () async {
     // arrange
     mockAuthenticationError(DomainError.unexpected);

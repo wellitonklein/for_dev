@@ -13,6 +13,7 @@ class LoginState {
   String emailError;
   String passwordError;
   String mainError;
+  String navigateTo;
   bool isLoading = false;
 
   bool get isFormValid =>
@@ -40,6 +41,8 @@ class StreamLoginPresenter implements ILoginPresenter {
       _controller?.stream?.map((state) => state.passwordError)?.distinct();
   Stream<String> get mainErrorStream =>
       _controller?.stream?.map((state) => state.mainError)?.distinct();
+  Stream<String> get navigateToStream =>
+      _controller?.stream?.map((state) => state.navigateTo)?.distinct();
   Stream<bool> get isFormValidStream =>
       _controller?.stream?.map((state) => state.isFormValid)?.distinct();
   Stream<bool> get isLoadingStream =>
@@ -69,11 +72,12 @@ class StreamLoginPresenter implements ILoginPresenter {
         email: _state.email,
         secret: _state.password,
       ));
+      _state.navigateTo = '/surveys';
     } on DomainError catch (e) {
       _state.mainError = e.description;
+      _state.isLoading = false;
     }
 
-    _state.isLoading = false;
     _update();
   }
 

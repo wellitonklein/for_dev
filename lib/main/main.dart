@@ -21,6 +21,12 @@ class AppWidget extends StatelessWidget {
       initialRoute: '/login',
       getPages: [
         GetPage(name: '/login', page: makeLoginPage),
+        GetPage(
+          name: '/surveys',
+          page: () => Scaffold(
+            body: const Text('Enquetes'),
+          ),
+        ),
       ],
     );
   }
