@@ -47,6 +47,13 @@ void main() {
     account = AccountEntity(token: faker.guid.guid());
   });
 
+  void mockError() {
+    when(saveSecureCacheStorage.saveSecure(
+      key: anyNamed('key'),
+      value: anyNamed('value'),
+    )).thenThrow(Exception());
+  }
+
   test('should call SaveSecureCacheStorage with correct values', () async {
     // act
     await sut.save(account);
@@ -60,10 +67,7 @@ void main() {
     'should throw UnexpectedError if SaveSecureCacheStorage throws',
     () async {
       // arrange
-      when(saveSecureCacheStorage.saveSecure(
-        key: anyNamed('key'),
-        value: anyNamed('value'),
-      )).thenThrow(Exception());
+      mockError();
 
       // act
       final future = sut.save(account);
