@@ -34,4 +34,11 @@ void main() {
     // assert
     expect(error, null);
   });
+
+  test('should return null if email is valid', () async {
+    // act
+    final error = sut.validate('welliton.fokushima@gmail.com');
+    // assert
+    expect(error, null);
+  });
 }
