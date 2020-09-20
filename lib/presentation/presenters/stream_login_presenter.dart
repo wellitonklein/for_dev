@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:for_dev/domain/helpers/domain_error.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/usecases/authentication_interface.dart';
@@ -10,6 +11,7 @@ class LoginState {
   String password;
   String emailError;
   String passwordError;
+  String mainError;
   bool isLoading = false;
 
   bool get isFormValid =>
@@ -35,6 +37,8 @@ class StreamLoginPresenter {
       _controller.stream.map((state) => state.emailError).distinct();
   Stream<String> get passwordErrorStream =>
       _controller.stream.map((state) => state.passwordError).distinct();
+  Stream<String> get mainErrorStream =>
+      _controller.stream.map((state) => state.mainError).distinct();
   Stream<bool> get isFormValidStream =>
       _controller.stream.map((state) => state.isFormValid).distinct();
   Stream<bool> get isLoadingStream =>
@@ -58,11 +62,15 @@ class StreamLoginPresenter {
     _state.isLoading = true;
     _update();
 
-    await authentication.auth(
-        params: AuthenticationParams(
-      email: _state.email,
-      secret: _state.password,
-    ));
+    try {
+      await authentication.auth(
+          params: AuthenticationParams(
+        email: _state.email,
+        secret: _state.password,
+      ));
+    } on DomainError catch (e) {
+      _state.mainError = e.description;
+    }
 
     _state.isLoading = false;
     _update();
