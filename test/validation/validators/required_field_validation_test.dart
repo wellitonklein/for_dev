@@ -19,9 +19,12 @@ class RequiredFieldValidation implements IFieldValidation {
 }
 
 void main() {
+  RequiredFieldValidation sut;
+  setUp(() {
+    sut = RequiredFieldValidation(field: 'any_field');
+  });
+
   test('should return null if value is not empty', () async {
-    // arrange
-    final sut = RequiredFieldValidation(field: 'any_field');
     // act
     final error = sut.validate('any_value');
     // assert
@@ -29,8 +32,6 @@ void main() {
   });
 
   test('should return error if value is empty', () async {
-    // arrange
-    final sut = RequiredFieldValidation(field: 'any_field');
     // act
     final error = sut.validate('');
     // assert
