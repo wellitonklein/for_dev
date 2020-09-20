@@ -1,4 +1,3 @@
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:meta/meta.dart';
 
@@ -14,7 +13,7 @@ class RequiredFieldValidation implements IFieldValidation {
 
   @override
   String validate(String value) {
-    return value.isEmpty ? 'Campo obrigatório' : null;
+    return value?.isNotEmpty == true ? null : 'Campo obrigatório';
   }
 }
 
@@ -34,6 +33,13 @@ void main() {
   test('should return error if value is empty', () async {
     // act
     final error = sut.validate('');
+    // assert
+    expect(error, 'Campo obrigatório');
+  });
+
+  test('should return error if value is null', () async {
+    // act
+    final error = sut.validate(null);
     // assert
     expect(error, 'Campo obrigatório');
   });
