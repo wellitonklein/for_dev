@@ -11,7 +11,17 @@ class ValidationComposite implements IValidation {
   ValidationComposite({@required this.validations});
 
   String validate({String field, String value}) {
-    return null;
+    String error;
+
+    for (final validation in validations.where((v) => v.field == field)) {
+      error = validation.validate(value);
+
+      if (error?.isNotEmpty == true) {
+        return error;
+      }
+    }
+
+    return error;
   }
 }
 
@@ -37,13 +47,13 @@ void main() {
 
   setUp(() {
     validation1 = FieldValidationSpy();
-    when(validation1.field).thenReturn('any_field');
+    when(validation1.field).thenReturn('other_field');
     mockValidation1(null);
     validation2 = FieldValidationSpy();
     when(validation2.field).thenReturn('any_field');
     mockValidation2(null);
     validation3 = FieldValidationSpy();
-    when(validation3.field).thenReturn('other_field');
+    when(validation3.field).thenReturn('any_field');
     mockValidation3(null);
 
     sut = ValidationComposite(validations: [
@@ -60,5 +70,16 @@ void main() {
     final error = sut.validate(field: 'any_field', value: 'any_value');
     // assert
     expect(error, null);
+  });
+
+  test('should return the first error', () async {
+    // arrange
+    mockValidation1('error_1');
+    mockValidation2('error_2');
+    mockValidation3('error_3');
+    // act
+    final error = sut.validate(field: 'any_field', value: 'any_value');
+    // assert
+    expect(error, 'error_2');
   });
 }
