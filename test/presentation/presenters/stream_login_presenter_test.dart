@@ -5,6 +5,7 @@ import 'package:test/test.dart';
 import 'package:for_dev/presentation/dependencies/dependencies.dart';
 import 'package:for_dev/presentation/presenters/presenters.dart';
 import 'package:for_dev/domain/usecases/authentication_interface.dart';
+import 'package:for_dev/domain/entities/account_entity.dart';
 
 class ValidationSpy extends Mock implements IValidation {}
 
@@ -29,6 +30,14 @@ void main() {
     mockValidationCall(field).thenReturn(value);
   }
 
+  PostExpectation mockAuthenticationCall() =>
+      when(authentication.auth(params: anyNamed('params')));
+
+  void mockAuthentication() {
+    mockAuthenticationCall()
+        .thenAnswer((_) async => AccountEntity(token: faker.guid.guid()));
+  }
+
   setUp(() {
     validation = ValidationSpy();
     authentication = AuthenticationSpy();
@@ -39,6 +48,7 @@ void main() {
     email = faker.internet.email();
     password = faker.internet.password();
     mockValidation();
+    mockAuthentication();
   });
 
   test('should call Validation with correct email', () async {
@@ -171,5 +181,16 @@ void main() {
         ),
       ),
     ).called(1);
+  });
+
+  test('should emit correct events on Authentication success', () async {
+    // arrange
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+
+    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+    // act
+    await sut.auth();
   });
 }
