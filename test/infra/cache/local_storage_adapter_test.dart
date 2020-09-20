@@ -40,4 +40,15 @@ void main() {
     // assert
     verify(secureStorage.write(key: key, value: value));
   });
+
+  test('should throws if save secure throws', () async {
+    // arrange
+    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        .thenThrow(Exception());
+
+    // act
+    final future = sut.saveSecure(key: key, value: value);
+    // assert
+    expect(future, throwsA(TypeMatcher<Exception>()));
+  });
 }
