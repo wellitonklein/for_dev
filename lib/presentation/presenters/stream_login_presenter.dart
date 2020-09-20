@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 
 import '../../domain/helpers/domain_error.dart';
 import '../../domain/usecases/authentication_interface.dart';
+import '../../ui/pages/login/login_presenter_interface.dart';
 import '../dependencies/dependencies.dart';
 
 class LoginState {
@@ -21,7 +22,7 @@ class LoginState {
       password != null;
 }
 
-class StreamLoginPresenter {
+class StreamLoginPresenter implements ILoginPresenter {
   final IValidation validation;
   final IAuthentication authentication;
 

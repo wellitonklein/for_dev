@@ -21,6 +21,7 @@ class EmailInputWidget extends StatelessWidget {
           ),
           keyboardType: TextInputType.emailAddress,
           onChanged: presenter.validateEmail,
+          autocorrect: false,
         );
       },
     );
