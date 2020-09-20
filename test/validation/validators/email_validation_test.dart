@@ -15,9 +15,13 @@ class EmailValidation implements IFieldValidation {
 }
 
 void main() {
+  EmailValidation sut;
+
+  setUp(() {
+    sut = EmailValidation(field: 'any_field');
+  });
+
   test('should return null if email is empty', () async {
-    // arrange
-    final sut = EmailValidation(field: 'any_field');
     // act
     final error = sut.validate('');
     // assert
@@ -25,8 +29,6 @@ void main() {
   });
 
   test('should return null if email is null', () async {
-    // arrange
-    final sut = EmailValidation(field: 'any_field');
     // act
     final error = sut.validate(null);
     // assert
