@@ -1,12 +1,13 @@
 import 'package:faker/faker.dart';
-import 'package:for_dev/domain/helpers/domain_error.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'package:for_dev/presentation/dependencies/dependencies.dart';
 import 'package:for_dev/presentation/presenters/presenters.dart';
+
 import 'package:for_dev/domain/usecases/authentication_interface.dart';
 import 'package:for_dev/domain/entities/account_entity.dart';
+import 'package:for_dev/domain/helpers/domain_error.dart';
 
 class ValidationSpy extends Mock implements IValidation {}
 
@@ -199,15 +200,16 @@ void main() {
     await sut.auth();
   });
 
-  test('should emit correct events on InvalidCredentialsError', () async {
+  test('should emit correct events on UnexpectedError', () async {
     // arrange
-    mockAuthenticationError(DomainError.invalidCredentials);
+    mockAuthenticationError(DomainError.unexpected);
     sut.validateEmail(email);
     sut.validatePassword(password);
 
     expectLater(sut.isLoadingStream, emits(false));
     sut.mainErrorStream.listen(
-      expectAsync1((error) => expect(error, 'Credenciais inválidas.')),
+      expectAsync1((error) =>
+          expect(error, 'Algo de errado aconteceu. Tente novamente em breve.')),
     );
 
     // act
