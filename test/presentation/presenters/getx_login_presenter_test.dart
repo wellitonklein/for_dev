@@ -16,7 +16,7 @@ class AuthenticationSpy extends Mock implements IAuthentication {}
 void main() {
   ValidationSpy validation;
   AuthenticationSpy authentication;
-  StreamLoginPresenter sut;
+  GetXLoginPresenter sut;
   String email;
   String password;
   final messageError = 'error';
@@ -47,7 +47,7 @@ void main() {
   setUp(() {
     validation = ValidationSpy();
     authentication = AuthenticationSpy();
-    sut = StreamLoginPresenter(
+    sut = GetXLoginPresenter(
       validation: validation,
       authentication: authentication,
     );
@@ -206,21 +206,13 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
-    expectLater(sut.isLoadingStream, emits(false));
-    sut.mainErrorStream.listen(
-      expectAsync1((error) =>
-          expect(error, 'Algo de errado aconteceu. Tente novamente em breve.')),
-    );
+    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+    sut.mainErrorStream.listen(expectAsync1(
+      (error) =>
+          expect(error, 'Algo de errado aconteceu. Tente novamente em breve.'),
+    ));
 
     // act
     await sut.auth();
-  });
-
-  test('should not emit after dispose', () async {
-    // arrange
-    expectLater(sut.emailErrorStream, neverEmits(null));
-
-    sut.dispose();
-    sut.validateEmail(email);
   });
 }
