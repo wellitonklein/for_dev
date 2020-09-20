@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:faker/faker.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -214,5 +216,13 @@ void main() {
 
     // act
     await sut.auth();
+  });
+
+  test('should not emit after dispose', () async {
+    // arrange
+    expectLater(sut.emailErrorStream, neverEmits(null));
+
+    sut.dispose();
+    sut.validateEmail(email);
   });
 }
