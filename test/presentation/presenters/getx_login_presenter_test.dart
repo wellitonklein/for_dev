@@ -6,6 +6,7 @@ import 'package:for_dev/presentation/dependencies/dependencies.dart';
 import 'package:for_dev/presentation/presenters/presenters.dart';
 
 import 'package:for_dev/domain/usecases/authentication_interface.dart';
+import 'package:for_dev/domain/usecases/save_current_account_interface.dart';
 import 'package:for_dev/domain/entities/account_entity.dart';
 import 'package:for_dev/domain/helpers/domain_error.dart';
 
@@ -13,12 +14,16 @@ class ValidationSpy extends Mock implements IValidation {}
 
 class AuthenticationSpy extends Mock implements IAuthentication {}
 
+class SaveCurrentAccountSpy extends Mock implements ISaveCurrentAccount {}
+
 void main() {
+  GetXLoginPresenter sut;
   ValidationSpy validation;
   AuthenticationSpy authentication;
-  GetXLoginPresenter sut;
+  SaveCurrentAccountSpy saveCurrentAccount;
   String email;
   String password;
+  String token;
   final messageError = 'error';
 
   PostExpectation mockValidationCall(String field) => when(
@@ -37,7 +42,7 @@ void main() {
 
   void mockAuthentication() {
     mockAuthenticationCall()
-        .thenAnswer((_) async => AccountEntity(token: faker.guid.guid()));
+        .thenAnswer((_) async => AccountEntity(token: token));
   }
 
   void mockAuthenticationError(DomainError error) {
@@ -47,12 +52,15 @@ void main() {
   setUp(() {
     validation = ValidationSpy();
     authentication = AuthenticationSpy();
+    saveCurrentAccount = SaveCurrentAccountSpy();
     sut = GetXLoginPresenter(
       validation: validation,
       authentication: authentication,
+      saveCurrentAccount: saveCurrentAccount,
     );
     email = faker.internet.email();
     password = faker.internet.password();
+    token = faker.guid.guid();
     mockValidation();
     mockAuthentication();
   });
@@ -187,6 +195,17 @@ void main() {
         ),
       ),
     ).called(1);
+  });
+
+  test('should call SaveCurrentAccount with correct value', () async {
+    // arrange
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+
+    // act
+    await sut.auth();
+
+    verify(saveCurrentAccount.save(AccountEntity(token: token))).called(1);
   });
 
   test('should emit correct events on Authentication success', () async {

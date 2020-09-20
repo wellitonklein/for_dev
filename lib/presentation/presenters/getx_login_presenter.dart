@@ -2,13 +2,14 @@ import 'package:get/state_manager.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/helpers/domain_error.dart';
-import '../../domain/usecases/authentication_interface.dart';
-import '../../ui/pages/login/login_presenter_interface.dart';
+import '../../domain/usecases/usecases.dart';
+import '../../ui/pages/pages.dart';
 import '../dependencies/dependencies.dart';
 
 class GetXLoginPresenter extends GetxController implements ILoginPresenter {
   final IValidation validation;
   final IAuthentication authentication;
+  final ISaveCurrentAccount saveCurrentAccount;
 
   String _email;
   String _password;
@@ -22,6 +23,7 @@ class GetXLoginPresenter extends GetxController implements ILoginPresenter {
   GetXLoginPresenter({
     @required this.validation,
     @required this.authentication,
+    @required this.saveCurrentAccount,
   });
 
   Stream<String> get emailErrorStream => _emailError.stream;
@@ -51,20 +53,19 @@ class GetXLoginPresenter extends GetxController implements ILoginPresenter {
 
   Future<void> auth() async {
     _isLoading.value = true;
-    _validateForm();
 
     try {
-      await authentication.auth(
+      final account = await authentication.auth(
           params: AuthenticationParams(
         email: _email,
         secret: _password,
       ));
+      await saveCurrentAccount.save(account);
     } on DomainError catch (e) {
       _mainError.value = e.description;
     }
 
     _isLoading.value = false;
-    _validateForm();
   }
 
   void dispose() {}

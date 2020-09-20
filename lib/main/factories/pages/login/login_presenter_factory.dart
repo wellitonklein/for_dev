@@ -13,5 +13,6 @@ ILoginPresenter makeGetXLoginPresenter() {
   return GetXLoginPresenter(
     validation: makeLoginValidation(),
     authentication: makeRemoteAuthentication(),
+    saveCurrentAccount: makeLocalSaveCurrentAccount(),
   );
 }
