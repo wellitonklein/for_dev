@@ -33,7 +33,7 @@ void main() {
     // arrange
 
     // act
-    await sut.checkAccount();
+    await sut.checkAccount(durationInSeconds: 0);
     // assert
     verify(loadCurrentAccount.load()).called(1);
   });
@@ -46,7 +46,7 @@ void main() {
         .listen(expectAsync1((page) => expect(page, '/surveys')));
 
     // act
-    await sut.checkAccount();
+    await sut.checkAccount(durationInSeconds: 0);
   });
 
   test('should go to login page on null result', () async {
@@ -57,7 +57,7 @@ void main() {
     sut.navigateToStream.listen(expectAsync1((page) => expect(page, '/login')));
 
     // act
-    await sut.checkAccount();
+    await sut.checkAccount(durationInSeconds: 0);
   });
 
   test('should go to login page on error', () async {
@@ -68,6 +68,6 @@ void main() {
     sut.navigateToStream.listen(expectAsync1((page) => expect(page, '/login')));
 
     // act
-    await sut.checkAccount();
+    await sut.checkAccount(durationInSeconds: 0);
   });
 }
