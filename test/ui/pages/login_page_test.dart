@@ -314,6 +314,21 @@ void main() {
     },
   );
 
+  testWidgets(
+    'should not change page',
+    (WidgetTester tester) async {
+      await loadPage(tester);
+
+      navigateToController.add('');
+      await tester.pump();
+      expect(Get.currentRoute, '/login');
+
+      navigateToController.add(null);
+      await tester.pump();
+      expect(Get.currentRoute, '/login');
+    },
+  );
+
   // testWidgets(
   //   'should close streams on dispose',
   //   (WidgetTester tester) async {
