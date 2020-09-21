@@ -19,6 +19,7 @@ class GexSplashPresenter implements ISplashPresenter {
   @override
   Future<void> checkAccount() async {
     await loadCurrentAccount.load();
+    _navigateTo.value = '/surveys';
   }
 }
 
@@ -39,5 +40,16 @@ void main() {
     await sut.checkAccount();
     // assert
     verify(loadCurrentAccount.load()).called(1);
+  });
+
+  test('should go to surveys page on success', () async {
+    // arrange
+
+    // assert
+    sut.navigateToStream
+        .listen(expectAsync1((page) => expect(page, '/surveys')));
+
+    // act
+    await sut.checkAccount();
   });
 }
