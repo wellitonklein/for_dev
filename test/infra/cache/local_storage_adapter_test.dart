@@ -58,5 +58,15 @@ void main() {
       // assert
       expect(response, value);
     });
+
+    test('should throws if fetch secure throws', () async {
+      // arrange
+      when(secureStorage.read(key: anyNamed('key'))).thenThrow(Exception());
+
+      // act
+      final future = sut.fetchSecure(key: key);
+      // assert
+      expect(future, throwsA(TypeMatcher<Exception>()));
+    });
   });
 }
