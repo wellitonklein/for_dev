@@ -47,5 +47,16 @@ void main() {
       // assert
       verify(secureStorage.read(key: key));
     });
+
+    test('should return correct value on success', () async {
+      // arrange
+      when(secureStorage.read(key: anyNamed('key')))
+          .thenAnswer((_) async => value);
+
+      // act
+      final response = await sut.fetchSecure(key: key);
+      // assert
+      expect(response, value);
+    });
   });
 }
