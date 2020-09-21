@@ -4,40 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/route_manager.dart';
 import 'package:mockito/mockito.dart';
-import 'package:meta/meta.dart';
 
-class SplashPage extends StatelessWidget {
-  final ISplashPresenter presenter;
-
-  const SplashPage({Key key, @required this.presenter}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    presenter.loadCurrentAccount();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('4Dev'),
-      ),
-      body: Builder(builder: (context) {
-        presenter.navigateToStream.listen((page) {
-          if (page?.isNotEmpty == true) {
-            Get.offAllNamed(page);
-          }
-        });
-
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }),
-    );
-  }
-}
-
-abstract class ISplashPresenter {
-  Stream<String> get navigateToStream;
-  Future<void> loadCurrentAccount();
-}
+import 'package:for_dev/ui/pages/pages.dart';
 
 class SplashPresenterSpy extends Mock implements ISplashPresenter {}
 
