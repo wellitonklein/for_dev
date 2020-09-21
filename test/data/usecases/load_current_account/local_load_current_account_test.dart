@@ -20,12 +20,18 @@ class LocalLoadCurrentAccount {
 }
 
 void main() {
-  test('should call FetchSecureCacheStorage with correct value', () async {
-    // arrange
-    final fetchSecureCacheStorage = FetchSecureCacheStorageSpy();
-    final sut = LocalLoadCurrentAccount(
+  LocalLoadCurrentAccount sut;
+  FetchSecureCacheStorageSpy fetchSecureCacheStorage;
+
+  setUp(() {
+    fetchSecureCacheStorage = FetchSecureCacheStorageSpy();
+    sut = LocalLoadCurrentAccount(
       fetchSecureCacheStorage: fetchSecureCacheStorage,
     );
+  });
+
+  test('should call FetchSecureCacheStorage with correct value', () async {
+    // arrange
 
     // act
     sut.load();
