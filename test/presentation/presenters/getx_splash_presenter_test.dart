@@ -25,10 +25,16 @@ class GexSplashPresenter implements ISplashPresenter {
 class LoadCurrentAccountSpy extends Mock implements ILoadCurrentAccount {}
 
 void main() {
+  GexSplashPresenter sut;
+  LoadCurrentAccountSpy loadCurrentAccount;
+  setUp(() {
+    loadCurrentAccount = LoadCurrentAccountSpy();
+    sut = GexSplashPresenter(loadCurrentAccount: loadCurrentAccount);
+  });
+
   test('should call LoadCurrentAccount', () async {
     // arrange
-    final loadCurrentAccount = LoadCurrentAccountSpy();
-    final sut = GexSplashPresenter(loadCurrentAccount: loadCurrentAccount);
+
     // act
     await sut.checkAccount();
     // assert
