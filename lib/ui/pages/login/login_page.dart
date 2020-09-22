@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/i18n/i18n.dart';
 import '../../widgets/widgets.dart';
 import '../pages.dart';
 import 'widgets/widgets.dart';
@@ -66,7 +67,7 @@ class LoginPage extends StatelessWidget {
                           FlatButton.icon(
                             onPressed: () {},
                             icon: const Icon(Icons.person),
-                            label: const Text('Criar conta'),
+                            label: Text(R.strings.addAccount),
                           ),
                         ],
                       ),
