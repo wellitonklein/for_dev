@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../ui/helpers/helpers.dart';
-import '../../../utils/i18n/i18n.dart';
 import '../../widgets/widgets.dart';
 import '../pages.dart';
 import 'widgets/widgets.dart';
@@ -51,7 +50,7 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 LoginHeaderWidget(),
-                HeadLine1Widget(text: 'Login'),
+                HeadLine1Widget(text: R.strings.login),
                 Padding(
                   padding: const EdgeInsets.all(32),
                   child: Provider(

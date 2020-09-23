@@ -14,7 +14,7 @@ class PasswordInputWidget extends StatelessWidget {
       builder: (context, snapshot) {
         return TextFormField(
           decoration: InputDecoration(
-            labelText: 'Senha',
+            labelText: R.strings.password,
             icon: Icon(
               Icons.lock,
               color: Theme.of(context).primaryColorLight,
