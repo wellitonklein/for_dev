@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../presentation/dependencies/dependencies.dart';
 import '../dependencies/dependencies.dart';
 
 class EmailValidation extends Equatable implements IFieldValidation {
@@ -9,12 +10,12 @@ class EmailValidation extends Equatable implements IFieldValidation {
   EmailValidation({@required this.field});
 
   @override
-  String validate(String value) {
+  ValidationError validate(String value) {
     final regex = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     );
     final isValid = value?.isNotEmpty != true || regex.hasMatch(value);
-    return !isValid ? 'Campo inválido.' : null;
+    return !isValid ? ValidationError.invalidField : null;
   }
 
   @override

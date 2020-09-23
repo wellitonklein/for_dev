@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 
+import 'package:for_dev/presentation/dependencies/dependencies.dart';
 import 'package:for_dev/validation/validators/validators.dart';
 
 void main() {
@@ -34,6 +35,6 @@ void main() {
     // act
     final error = sut.validate('welliton.fokushima');
     // assert
-    expect(error, 'Campo inválido.');
+    expect(error, ValidationError.invalidField);
   });
 }

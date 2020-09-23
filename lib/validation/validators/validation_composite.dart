@@ -8,13 +8,13 @@ class ValidationComposite implements IValidation {
 
   ValidationComposite({@required this.validations});
 
-  String validate({String field, String value}) {
-    String error;
+  ValidationError validate({String field, String value}) {
+    ValidationError error;
 
     for (final validation in validations.where((v) => v.field == field)) {
       error = validation.validate(value);
 
-      if (error?.isNotEmpty == true) {
+      if (error != null) {
         return error;
       }
     }

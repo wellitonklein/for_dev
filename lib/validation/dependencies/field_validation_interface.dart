@@ -1,4 +1,6 @@
+import '../../presentation/dependencies/dependencies.dart';
+
 abstract class IFieldValidation {
   String get field;
-  String validate(String value);
+  ValidationError validate(String value);
 }
