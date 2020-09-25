@@ -90,4 +90,18 @@ void main() {
     // assert
     expect(future, throwsA(DomainError.unexpected));
   });
+
+  test(
+    'should throw emailInUseError if HttpClient returns 403',
+    () async {
+      // arrange
+      mockHttpError(HttpError.forbidden);
+
+      // act
+      final future = sut.add(params: params);
+
+      // assert
+      expect(future, throwsA(DomainError.emailInUse));
+    },
+  );
 }

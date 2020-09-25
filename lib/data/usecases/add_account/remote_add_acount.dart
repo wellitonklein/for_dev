@@ -21,8 +21,10 @@ class RemoteAddAccount implements IAddAccount {
         method: 'POST',
         body: RemoteAddAccountParams.fromDomain(params).toJson(),
       );
-    } on HttpError catch (_) {
-      throw DomainError.unexpected;
+    } on HttpError catch (error) {
+      throw error == HttpError.forbidden
+          ? DomainError.emailInUse
+          : DomainError.unexpected;
     }
   }
 }
