@@ -4,6 +4,7 @@ import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../http/http.dart';
+import '../../models/models.dart';
 
 class RemoteAddAccount implements IAddAccount {
   final IHttpClient httpClient;
@@ -16,11 +17,12 @@ class RemoteAddAccount implements IAddAccount {
 
   Future<AccountEntity> add({@required AddAccountParams params}) async {
     try {
-      await httpClient.request(
+      final response = await httpClient.request(
         url: url,
         method: 'POST',
         body: RemoteAddAccountParams.fromDomain(params).toJson(),
       );
+      return RemoteAccountModel.fromJson(response).toEntity();
     } on HttpError catch (error) {
       throw error == HttpError.forbidden
           ? DomainError.emailInUse
