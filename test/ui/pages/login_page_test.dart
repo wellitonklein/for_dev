@@ -76,56 +76,52 @@ void main() {
     closeStreams();
   });
 
-  testWidgets(
-    'should load with correct initial state',
-    (WidgetTester tester) async {
-      // arrange
-      await loadPage(tester);
+  testWidgets('should load with correct initial state',
+      (WidgetTester tester) async {
+    // arrange
+    await loadPage(tester);
 
-      // assert
-      final emailTextChildren = find.descendant(
-        of: find.bySemanticsLabel('Email'),
-        matching: find.byType(Text),
-      );
-      expect(
-        emailTextChildren,
-        findsOneWidget,
-        reason:
-            'when a TextFormField has only one text child, means it has no errors, since one of the childs is always the label text',
-      );
+    // assert
+    final emailTextChildren = find.descendant(
+      of: find.bySemanticsLabel('Email'),
+      matching: find.byType(Text),
+    );
+    expect(
+      emailTextChildren,
+      findsOneWidget,
+      reason:
+          'when a TextFormField has only one text child, means it has no errors, since one of the childs is always the label text',
+    );
 
-      final passwordTextChildren = find.descendant(
-        of: find.bySemanticsLabel('Senha'),
-        matching: find.byType(Text),
-      );
-      expect(
-        passwordTextChildren,
-        findsOneWidget,
-        reason:
-            'when a TextFormField has only one text child, means it has no errors, since one of the childs is always the label text',
-      );
+    final passwordTextChildren = find.descendant(
+      of: find.bySemanticsLabel('Senha'),
+      matching: find.byType(Text),
+    );
+    expect(
+      passwordTextChildren,
+      findsOneWidget,
+      reason:
+          'when a TextFormField has only one text child, means it has no errors, since one of the childs is always the label text',
+    );
 
-      final button = tester.widget<RaisedButton>(find.byType(RaisedButton));
-      expect(button.onPressed, null);
+    final button = tester.widget<RaisedButton>(find.byType(RaisedButton));
+    expect(button.onPressed, null);
 
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-    },
-  );
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
 
-  testWidgets(
-    'should call validate with correct values',
-    (WidgetTester tester) async {
-      await loadPage(tester);
+  testWidgets('should call validate with correct values',
+      (WidgetTester tester) async {
+    await loadPage(tester);
 
-      final email = faker.internet.email();
-      await tester.enterText(find.bySemanticsLabel('Email'), email);
-      verify(presenter.validateEmail(email));
+    final email = faker.internet.email();
+    await tester.enterText(find.bySemanticsLabel('Email'), email);
+    verify(presenter.validateEmail(email));
 
-      final password = faker.internet.password();
-      await tester.enterText(find.bySemanticsLabel('Senha'), password);
-      verify(presenter.validatePassword(password));
-    },
-  );
+    final password = faker.internet.password();
+    await tester.enterText(find.bySemanticsLabel('Senha'), password);
+    verify(presenter.validatePassword(password));
+  });
 
   testWidgets(
     'should present error if email is invalid',
