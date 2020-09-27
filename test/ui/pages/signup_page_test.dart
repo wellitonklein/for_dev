@@ -209,19 +209,19 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    passwordErrorController.add(UIError.invalidField);
+    passwordConfirmationErrorController.add(UIError.invalidField);
     await tester.pump();
     expect(find.text('Campo inválido.'), findsOneWidget);
 
-    passwordErrorController.add(UIError.requiredField);
+    passwordConfirmationErrorController.add(UIError.requiredField);
     await tester.pump();
     expect(find.text('Campo obrigatório.'), findsOneWidget);
 
-    passwordErrorController.add(null);
+    passwordConfirmationErrorController.add(null);
     await tester.pump();
     expect(
       find.descendant(
-        of: find.bySemanticsLabel('Senha'),
+        of: find.bySemanticsLabel('Confirmar senha'),
         matching: find.byType(Text),
       ),
       findsOneWidget,
