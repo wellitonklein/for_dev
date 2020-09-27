@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../../../ui/helpers/helpers.dart';
+import '../../helpers/helpers.dart';
 import '../../widgets/widgets.dart';
-import '../pages.dart';
+import 'login_presenter_interface.dart';
 import 'widgets/widgets.dart';
 
 class LoginPage extends StatelessWidget {

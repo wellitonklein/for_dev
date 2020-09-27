@@ -25,4 +25,10 @@ class PtBr implements ITranslations {
 
   @override
   String get password => 'Senha';
+
+  @override
+  String get name => 'Nome';
+
+  @override
+  String get confirmPassword => 'Confirmar senha';
 }

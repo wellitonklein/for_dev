@@ -6,6 +6,8 @@ abstract class ITranslations {
   String get msgWait;
 
   String get password;
+  String get confirmPassword;
   String get login;
+  String get name;
   String get addAccount;
 }

@@ -24,4 +24,10 @@ class EnUs implements ITranslations {
 
   @override
   String get password => 'Password';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get confirmPassword => 'Confirm password';
 }
