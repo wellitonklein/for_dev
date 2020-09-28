@@ -3,6 +3,7 @@ abstract class ITranslations {
   String get msgInvalidField;
   String get msgRequiredField;
   String get msgUnexpected;
+  String get msgEmailInUse;
   String get msgWait;
 
   String get password;
