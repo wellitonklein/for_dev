@@ -8,6 +8,11 @@ import '../dependencies/dependencies.dart';
 class GetxSignUpPresenter extends GetxController {
   final IValidation validation;
 
+  String _name;
+  String _email;
+  String _password;
+  String _passwordConfirmation;
+
   var _emailError = Rx<UIError>();
   var _nameError = Rx<UIError>();
   var _passwordError = Rx<UIError>();
@@ -25,22 +30,26 @@ class GetxSignUpPresenter extends GetxController {
       _passwordConfirmationError.stream;
   Stream<bool> get isFormValidStream => _isFormValid.stream;
 
-  void validateEmail(String value) {
-    _emailError.value = _validateField(field: 'email', value: value);
-    _validateForm();
-  }
-
   void validateName(String value) {
+    _name = value;
     _nameError.value = _validateField(field: 'name', value: value);
     _validateForm();
   }
 
+  void validateEmail(String value) {
+    _email = value;
+    _emailError.value = _validateField(field: 'email', value: value);
+    _validateForm();
+  }
+
   void validatePassword(String value) {
+    _password = value;
     _passwordError.value = _validateField(field: 'password', value: value);
     _validateForm();
   }
 
   void validatePasswordConfirmation(String value) {
+    _passwordConfirmation = value;
     _passwordConfirmationError.value =
         _validateField(field: 'passwordConfirmation', value: value);
     _validateForm();
@@ -61,7 +70,14 @@ class GetxSignUpPresenter extends GetxController {
   }
 
   void _validateForm() {
-    _isFormValid.value = false;
+    _isFormValid.value = _nameError.value == null &&
+        _emailError.value == null &&
+        _passwordError.value == null &&
+        _passwordConfirmationError.value == null &&
+        _name != null &&
+        _email != null &&
+        _password != null &&
+        _passwordConfirmation != null;
   }
 
   void dispose() {}
