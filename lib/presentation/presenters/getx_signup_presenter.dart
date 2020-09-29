@@ -1,12 +1,13 @@
 import 'package:get/state_manager.dart';
 import 'package:meta/meta.dart';
 
+import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
-
 import '../dependencies/dependencies.dart';
 
 class GetxSignUpPresenter extends GetxController {
   final IValidation validation;
+  final IAddAccount addAccount;
 
   String _name;
   String _email;
@@ -21,6 +22,7 @@ class GetxSignUpPresenter extends GetxController {
 
   GetxSignUpPresenter({
     @required this.validation,
+    @required this.addAccount,
   });
 
   Stream<UIError> get emailErrorStream => _emailError.stream;
@@ -78,6 +80,17 @@ class GetxSignUpPresenter extends GetxController {
         _email != null &&
         _password != null &&
         _passwordConfirmation != null;
+  }
+
+  Future<void> signUp() async {
+    await addAccount.add(
+      params: AddAccountParams(
+        name: _name,
+        email: _email,
+        password: _password,
+        passwordConfirmation: _passwordConfirmation,
+      ),
+    );
   }
 
   void dispose() {}

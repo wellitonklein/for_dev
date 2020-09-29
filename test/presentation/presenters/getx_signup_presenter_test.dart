@@ -2,6 +2,8 @@ import 'package:faker/faker.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'package:for_dev/domain/entities/entities.dart';
+import 'package:for_dev/domain/usecases/usecases.dart';
 import 'package:for_dev/presentation/dependencies/dependencies.dart';
 import 'package:for_dev/presentation/presenters/presenters.dart';
 
@@ -9,13 +11,17 @@ import 'package:for_dev/ui/helpers/errors/errors.dart';
 
 class ValidationSpy extends Mock implements IValidation {}
 
+class AddAccountSpy extends Mock implements IAddAccount {}
+
 void main() {
   GetxSignUpPresenter sut;
   ValidationSpy validation;
+  AddAccountSpy addAccount;
   String email;
   String name;
   String password;
   String passwordConfirmation;
+  String token;
 
   PostExpectation mockValidationCall(String field) => when(
         validation.validate(
@@ -28,16 +34,27 @@ void main() {
     mockValidationCall(field).thenReturn(value);
   }
 
+  PostExpectation mockAddAccountCall() =>
+      when(addAccount.add(params: anyNamed('params')));
+
+  void mockAddAccount() {
+    mockAddAccountCall().thenAnswer((_) async => AccountEntity(token: token));
+  }
+
   setUp(() {
     validation = ValidationSpy();
+    addAccount = AddAccountSpy();
     sut = GetxSignUpPresenter(
       validation: validation,
+      addAccount: addAccount,
     );
     email = faker.internet.email();
     name = faker.person.name();
     password = faker.internet.password();
     passwordConfirmation = faker.internet.password();
+    token = faker.guid.guid();
     mockValidation();
+    mockAddAccount();
   });
 
   test('should call Validation with correct email', () async {
@@ -276,5 +293,27 @@ void main() {
     sut.validatePassword(password);
     await Future.delayed(Duration.zero);
     sut.validatePasswordConfirmation(passwordConfirmation);
+  });
+
+  test('should call AddAccount with correct values', () async {
+    // arrange
+    sut.validateName(name);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    // act
+    await sut.signUp();
+
+    verify(
+      addAccount.add(
+        params: AddAccountParams(
+          name: name,
+          email: email,
+          password: password,
+          passwordConfirmation: passwordConfirmation,
+        ),
+      ),
+    ).called(1);
   });
 }
