@@ -14,6 +14,7 @@ void main() {
   ValidationSpy validation;
   String email;
   String name;
+  String password;
 
   PostExpectation mockValidationCall(String field) => when(
         validation.validate(
@@ -33,6 +34,7 @@ void main() {
     );
     email = faker.internet.email();
     name = faker.person.name();
+    password = faker.internet.password();
     mockValidation();
   });
 
@@ -146,5 +148,61 @@ void main() {
     // act
     sut.validateName(name);
     sut.validateName(name);
+  });
+
+  test('should call Validation with correct password', () async {
+    // act
+    sut.validatePassword(password);
+
+    // assert
+    verify(validation.validate(field: 'password', value: password)).called(1);
+  });
+
+  test('should emit invalidFieldError if password is invalid', () async {
+    // arrange
+    mockValidation(value: ValidationError.invalidField);
+
+    // assert
+    sut.passwordErrorStream.listen(
+      expectAsync1((error) => expect(error, UIError.invalidField)),
+    );
+    sut.isFormValidStream.listen(
+      expectAsync1((isValid) => expect(isValid, false)),
+    );
+
+    // act
+    sut.validatePassword(password);
+    sut.validatePassword(password);
+  });
+
+  test('should emit requiredFieldError if password is empty', () async {
+    // arrange
+    mockValidation(value: ValidationError.requiredField);
+
+    // assert
+    sut.passwordErrorStream.listen(
+      expectAsync1((error) => expect(error, UIError.requiredField)),
+    );
+    sut.isFormValidStream.listen(
+      expectAsync1((isValid) => expect(isValid, false)),
+    );
+
+    // act
+    sut.validatePassword(password);
+    sut.validatePassword(password);
+  });
+
+  test('should emit null if password validation succes', () async {
+    // assert
+    sut.passwordErrorStream.listen(
+      expectAsync1((error) => expect(error, null)),
+    );
+    sut.isFormValidStream.listen(
+      expectAsync1((isValid) => expect(isValid, false)),
+    );
+
+    // act
+    sut.validatePassword(password);
+    sut.validatePassword(password);
   });
 }
