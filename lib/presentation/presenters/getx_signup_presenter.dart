@@ -8,6 +8,7 @@ import '../dependencies/dependencies.dart';
 class GetxSignUpPresenter extends GetxController {
   final IValidation validation;
   final IAddAccount addAccount;
+  final ISaveCurrentAccount saveCurrentAccount;
 
   String _name;
   String _email;
@@ -23,6 +24,7 @@ class GetxSignUpPresenter extends GetxController {
   GetxSignUpPresenter({
     @required this.validation,
     @required this.addAccount,
+    @required this.saveCurrentAccount,
   });
 
   Stream<UIError> get emailErrorStream => _emailError.stream;
@@ -83,7 +85,7 @@ class GetxSignUpPresenter extends GetxController {
   }
 
   Future<void> signUp() async {
-    await addAccount.add(
+    final account = await addAccount.add(
       params: AddAccountParams(
         name: _name,
         email: _email,
@@ -91,6 +93,7 @@ class GetxSignUpPresenter extends GetxController {
         passwordConfirmation: _passwordConfirmation,
       ),
     );
+    await saveCurrentAccount.save(account);
   }
 
   void dispose() {}
