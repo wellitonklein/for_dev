@@ -1,3 +1,4 @@
+import 'package:faker/faker.dart';
 import 'package:test/test.dart';
 import 'package:meta/meta.dart';
 
@@ -14,11 +15,11 @@ class MinLengthValidation implements IFieldValidation {
   });
 
   ValidationError validate(String value) {
-    if (value?.isEmpty == true || value == null) {
-      return ValidationError.invalidField;
+    if (value?.isNotEmpty == true && value != null && value.length >= length) {
+      return null;
     }
 
-    return null;
+    return ValidationError.invalidField;
   }
 }
 
@@ -41,5 +42,19 @@ void main() {
     final error = sut.validate(null);
     // assert
     expect(error, ValidationError.invalidField);
+  });
+
+  test('should return error if value is less than min length', () async {
+    // act
+    final error = sut.validate(faker.randomGenerator.string(4, min: 1));
+    // assert
+    expect(error, ValidationError.invalidField);
+  });
+
+  test('should return error if value is equal than min length', () async {
+    // act
+    final error = sut.validate(faker.randomGenerator.string(5, min: 5));
+    // assert
+    expect(error, null);
   });
 }
