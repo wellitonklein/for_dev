@@ -1,27 +1,8 @@
 import 'package:faker/faker.dart';
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
 
 import 'package:for_dev/presentation/dependencies/dependencies.dart';
-import 'package:for_dev/validation/dependencies/dependencies.dart';
-
-class MinLengthValidation implements IFieldValidation {
-  final String field;
-  final int length;
-
-  MinLengthValidation({
-    @required this.field,
-    @required this.length,
-  });
-
-  ValidationError validate(String value) {
-    if (value?.isNotEmpty == true && value != null && value.length >= length) {
-      return null;
-    }
-
-    return ValidationError.invalidField;
-  }
-}
+import 'package:for_dev/validation/validators/validators.dart';
 
 void main() {
   MinLengthValidation sut;
