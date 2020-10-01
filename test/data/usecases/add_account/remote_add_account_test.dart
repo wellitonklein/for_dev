@@ -8,7 +8,7 @@ import 'package:for_dev/domain/helpers/helpers.dart';
 import 'package:for_dev/data/http/http.dart';
 import 'package:for_dev/data/usecases/usecases.dart';
 
-class HttpClientSpy extends Mock implements IHttpClient {}
+class HttpClientSpy extends Mock implements IHttpClient<Map> {}
 
 void main() {
   RemoteAddAccount sut;
