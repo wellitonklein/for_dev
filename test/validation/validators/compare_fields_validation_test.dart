@@ -13,6 +13,13 @@ void main() {
     );
   });
 
+  test('should return null on invalid cases', () async {
+    // assert
+    expect(sut.validate({'any_field': 'any_value'}), null);
+    expect(sut.validate({'other_field': 'any_value'}), null);
+    expect(sut.validate({}), null);
+  });
+
   test('should return error if values are not equal', () async {
     // arrange
     final formData = {'any_field': 'any_value', 'other_field': 'other_value'};
