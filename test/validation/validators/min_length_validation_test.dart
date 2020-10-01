@@ -13,35 +13,38 @@ void main() {
 
   test('should return error if value is empty', () async {
     // act
-    final error = sut.validate('');
+    final error = sut.validate({'any_field': ''});
     // assert
     expect(error, ValidationError.invalidField);
   });
 
   test('should return error if value is null', () async {
     // act
-    final error = sut.validate(null);
+    final error = sut.validate({'any_field': null});
     // assert
     expect(error, ValidationError.invalidField);
   });
 
   test('should return error if value is less than min length', () async {
     // act
-    final error = sut.validate(faker.randomGenerator.string(4, min: 1));
+    final error =
+        sut.validate({'any_field': faker.randomGenerator.string(4, min: 1)});
     // assert
     expect(error, ValidationError.invalidField);
   });
 
   test('should return error if value is equal than min length', () async {
     // act
-    final error = sut.validate(faker.randomGenerator.string(5, min: 5));
+    final error =
+        sut.validate({'any_field': faker.randomGenerator.string(5, min: 5)});
     // assert
     expect(error, null);
   });
 
   test('should return error if value is bigger than min length', () async {
     // act
-    final error = sut.validate(faker.randomGenerator.string(10, min: 6));
+    final error =
+        sut.validate({'any_field': faker.randomGenerator.string(10, min: 6)});
     // assert
     expect(error, null);
   });

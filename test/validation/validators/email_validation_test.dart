@@ -12,28 +12,28 @@ void main() {
 
   test('should return null if email is empty', () async {
     // act
-    final error = sut.validate('');
+    final error = sut.validate({'any_field': ''});
     // assert
     expect(error, null);
   });
 
   test('should return null if email is null', () async {
     // act
-    final error = sut.validate(null);
+    final error = sut.validate({'any_field': null});
     // assert
     expect(error, null);
   });
 
   test('should return null if email is valid', () async {
     // act
-    final error = sut.validate('welliton.fokushima@gmail.com');
+    final error = sut.validate({'any_field': 'welliton.fokushima@gmail.com'});
     // assert
     expect(error, null);
   });
 
   test('should return null if email is invalid', () async {
     // act
-    final error = sut.validate('welliton.fokushima');
+    final error = sut.validate({'any_field': 'welliton.fokushima'});
     // assert
     expect(error, ValidationError.invalidField);
   });

@@ -8,11 +8,11 @@ class ValidationComposite implements IValidation {
 
   ValidationComposite({@required this.validations});
 
-  ValidationError validate({String field, String value}) {
+  ValidationError validate({String field, Map input}) {
     ValidationError error;
 
     for (final validation in validations.where((v) => v.field == field)) {
-      error = validation.validate(value);
+      error = validation.validate(input);
 
       if (error != null) {
         return error;

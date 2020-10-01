@@ -30,7 +30,7 @@ void main() {
   PostExpectation mockValidationCall(String field) => when(
         validation.validate(
           field: field == null ? anyNamed('field') : field,
-          value: anyNamed('value'),
+          input: anyNamed('input'),
         ),
       );
 
@@ -74,11 +74,13 @@ void main() {
   });
 
   test('should call Validation with correct email', () async {
+    final formData = {'email': email, 'password': null};
+
     // act
     sut.validateEmail(email);
 
     // assert
-    verify(validation.validate(field: 'email', value: email)).called(1);
+    verify(validation.validate(field: 'email', input: formData)).called(1);
   });
 
   test('should emit invalidFieldError if email is invalid', () async {
@@ -130,11 +132,13 @@ void main() {
   });
 
   test('should call Validation with correct password', () async {
+    final formData = {'email': null, 'password': password};
+
     // act
     sut.validatePassword(password);
 
     // assert
-    verify(validation.validate(field: 'password', value: password)).called(1);
+    verify(validation.validate(field: 'password', input: formData)).called(1);
   });
 
   test('should emit requiredFieldError if password is empty', () async {

@@ -13,8 +13,10 @@ class MinLengthValidation extends Equatable implements IFieldValidation {
     @required this.length,
   });
 
-  ValidationError validate(String value) {
-    if (value?.isNotEmpty == true && value != null && value.length >= length) {
+  ValidationError validate(Map input) {
+    if (input[field]?.isNotEmpty == true &&
+        input[field] != null &&
+        input[field].length >= length) {
       return null;
     }
 

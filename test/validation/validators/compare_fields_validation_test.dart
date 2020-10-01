@@ -9,20 +9,24 @@ void main() {
   setUp(() {
     sut = CompareFieldsValidation(
       field: 'any_field',
-      valueToCompare: 'any_value',
+      fieldToCompare: 'other_field',
     );
   });
 
   test('should return error if values are not equal', () async {
+    // arrange
+    final formData = {'any_field': 'any_value', 'other_field': 'other_value'};
     // act
-    final error = sut.validate('wrong_value');
+    final error = sut.validate(formData);
     // assert
     expect(error, ValidationError.invalidField);
   });
 
   test('should return null if values are equal', () async {
+    // arrange
+    final formData = {'any_field': 'any_value', 'other_field': 'any_value'};
     // act
-    final error = sut.validate('any_value');
+    final error = sut.validate(formData);
     // assert
     expect(error, null);
   });

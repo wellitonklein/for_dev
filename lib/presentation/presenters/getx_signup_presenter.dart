@@ -44,31 +44,36 @@ class GetxSignUpPresenter extends GetxController implements ISignUpPresenter {
 
   void validateName(String value) {
     _name = value;
-    _nameError.value = _validateField(field: 'name', value: value);
+    _nameError.value = _validateField('name');
     _validateForm();
   }
 
   void validateEmail(String value) {
     _email = value;
-    _emailError.value = _validateField(field: 'email', value: value);
+    _emailError.value = _validateField('email');
     _validateForm();
   }
 
   void validatePassword(String value) {
     _password = value;
-    _passwordError.value = _validateField(field: 'password', value: value);
+    _passwordError.value = _validateField('password');
     _validateForm();
   }
 
   void validatePasswordConfirmation(String value) {
     _passwordConfirmation = value;
-    _passwordConfirmationError.value =
-        _validateField(field: 'passwordConfirmation', value: value);
+    _passwordConfirmationError.value = _validateField('passwordConfirmation');
     _validateForm();
   }
 
-  UIError _validateField({String field, String value}) {
-    final error = validation.validate(field: field, value: value);
+  UIError _validateField(String field) {
+    final formData = {
+      'name': _name,
+      'email': _email,
+      'password': _password,
+      'passwordConfirmation': _passwordConfirmation,
+    };
+    final error = validation.validate(field: field, input: formData);
     switch (error) {
       case ValidationError.invalidField:
         return UIError.invalidField;
