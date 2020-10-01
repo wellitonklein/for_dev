@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:for_dev/ui/helpers/helpers.dart';
 import 'package:get/get.dart';
 import 'package:mockito/mockito.dart';
 
+import 'package:for_dev/ui/helpers/helpers.dart';
 import 'package:for_dev/ui/pages/pages.dart';
 
 class LoginPresenterSpy extends Mock implements ILoginPresenter {}
@@ -221,22 +221,20 @@ void main() {
     },
   );
 
-  testWidgets(
-    'should call authentication on form submit',
-    (WidgetTester tester) async {
-      await loadPage(tester);
+  testWidgets('should call authentication on form submit',
+      (WidgetTester tester) async {
+    await loadPage(tester);
 
-      final button = find.byType(RaisedButton);
+    final button = find.byType(RaisedButton);
 
-      isFormValidController.add(true);
-      await tester.pump();
-      await tester.ensureVisible(button);
-      await tester.tap(button);
-      await tester.pump();
+    isFormValidController.add(true);
+    await tester.pump();
+    await tester.ensureVisible(button);
+    await tester.tap(button);
+    await tester.pump();
 
-      verify(presenter.auth()).called(1);
-    },
-  );
+    verify(presenter.auth()).called(1);
+  });
 
   testWidgets(
     'should present loading',
@@ -319,14 +317,16 @@ void main() {
     },
   );
 
-  // testWidgets(
-  //   'should close streams on dispose',
-  //   (WidgetTester tester) async {
-  //     await loadPage(tester);
+  testWidgets('should call goToSignUp on link click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
 
-  //     addTearDown(() {
-  //       verify(presenter.dispose()).called(1);
-  //     });
-  //   },
-  // );
+    final button = find.text(R.strings.addAccount);
+
+    await tester.ensureVisible(button);
+    await tester.tap(button);
+    await tester.pump();
+
+    verify(presenter.goToSignUp()).called(1);
+  });
 }

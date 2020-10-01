@@ -257,8 +257,6 @@ void main() {
 
     // act
     await sut.auth();
-
-    //
   });
 
   test('should emit correct events on UnexpectedError', () async {
@@ -274,5 +272,13 @@ void main() {
 
     // act
     await sut.auth();
+  });
+
+  test('should go to SignUpPage on link click', () async {
+    sut.navigateToStream
+        .listen(expectAsync1((page) => expect(page, '/signup')));
+
+    // act
+    sut.goToSignUp();
   });
 }
