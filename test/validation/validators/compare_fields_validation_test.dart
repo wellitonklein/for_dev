@@ -13,10 +13,17 @@ void main() {
     );
   });
 
-  test('should return error if value is not equal', () async {
+  test('should return error if values are not equal', () async {
     // act
     final error = sut.validate('wrong_value');
     // assert
     expect(error, ValidationError.invalidField);
+  });
+
+  test('should return null if values are equal', () async {
+    // act
+    final error = sut.validate('any_value');
+    // assert
+    expect(error, null);
   });
 }

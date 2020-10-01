@@ -14,9 +14,9 @@ class CompareFieldsValidation extends Equatable implements IFieldValidation {
   });
 
   ValidationError validate(String value) {
-    return ValidationError.invalidField;
+    return value == valueToCompare ? null : ValidationError.invalidField;
   }
 
   @override
-  List<Object> get props => [field];
+  List<Object> get props => [field, valueToCompare];
 }
