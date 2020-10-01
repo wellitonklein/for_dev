@@ -10,6 +10,6 @@ IValidation makeLoginValidation() {
 List<IFieldValidation> makeLoginValidations() {
   return [
     ...ValidationBuilder.field('email').required().email().build(),
-    ...ValidationBuilder.field('password').required().build(),
+    ...ValidationBuilder.field('password').required().min(3).build(),
   ];
 }
