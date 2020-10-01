@@ -23,9 +23,13 @@ class MinLengthValidation implements IFieldValidation {
 }
 
 void main() {
+  MinLengthValidation sut;
+
+  setUp(() {
+    sut = MinLengthValidation(field: 'any_field', length: 5);
+  });
+
   test('should return error if value is empty', () async {
-    // arrange
-    final sut = MinLengthValidation(field: 'any_field', length: 5);
     // act
     final error = sut.validate('');
     // assert
@@ -33,8 +37,6 @@ void main() {
   });
 
   test('should return error if value is null', () async {
-    // arrange
-    final sut = MinLengthValidation(field: 'any_field', length: 5);
     // act
     final error = sut.validate(null);
     // assert
