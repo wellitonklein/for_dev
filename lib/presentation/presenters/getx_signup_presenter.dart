@@ -4,9 +4,10 @@ import 'package:meta/meta.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
+import '../../ui/pages/pages.dart';
 import '../dependencies/dependencies.dart';
 
-class GetxSignUpPresenter extends GetxController {
+class GetxSignUpPresenter extends GetxController implements ISignUpPresenter {
   final IValidation validation;
   final IAddAccount addAccount;
   final ISaveCurrentAccount saveCurrentAccount;
@@ -117,4 +118,9 @@ class GetxSignUpPresenter extends GetxController {
   }
 
   void dispose() {}
+
+  @override
+  void goToLogin() {
+    _navigateTo.value = '/login';
+  }
 }
