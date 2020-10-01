@@ -57,4 +57,11 @@ void main() {
     // assert
     expect(error, null);
   });
+
+  test('should return error if value is bigger than min length', () async {
+    // act
+    final error = sut.validate(faker.randomGenerator.string(10, min: 6));
+    // assert
+    expect(error, null);
+  });
 }
