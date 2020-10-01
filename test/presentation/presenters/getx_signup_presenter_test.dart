@@ -393,4 +393,18 @@ void main() {
     // act
     await sut.signUp();
   });
+
+  test('should change page on success', () async {
+    // arrange
+    sut.validateName(name);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    sut.navigateToStream
+        .listen(expectAsync1((page) => expect(page, '/surveys')));
+
+    // act
+    await sut.signUp();
+  });
 }
