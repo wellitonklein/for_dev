@@ -266,5 +266,16 @@ void main() {
       // assert
       expect(future, throwsA(HttpError.badRequest));
     });
+
+    test('should return UnauthorizedError if GET returns 401', () async {
+      // arrange
+      mockResponse(statusCode: 401);
+
+      // act
+      final future = sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(future, throwsA(HttpError.unauthorized));
+    });
   });
 }
