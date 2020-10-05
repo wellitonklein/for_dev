@@ -288,5 +288,16 @@ void main() {
       // assert
       expect(future, throwsA(HttpError.forbidden));
     });
+
+    test('should return NotFoundError if GET returns 404', () async {
+      // arrange
+      mockResponse(statusCode: 404);
+
+      // act
+      final future = sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(future, throwsA(HttpError.notFound));
+    });
   });
 }
