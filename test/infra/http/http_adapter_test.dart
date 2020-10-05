@@ -299,5 +299,16 @@ void main() {
       // assert
       expect(future, throwsA(HttpError.notFound));
     });
+
+    test('should return ServerError if GET returns 500', () async {
+      // arrange
+      mockResponse(statusCode: 500);
+
+      // act
+      final future = sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(future, throwsA(HttpError.serverError));
+    });
   });
 }
