@@ -255,5 +255,16 @@ void main() {
       // assert
       expect(response, null);
     });
+
+    test('should return BadRequestError if GET returns 400', () async {
+      // arrange
+      mockResponse(statusCode: 400);
+
+      // act
+      final future = sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(future, throwsA(HttpError.badRequest));
+    });
   });
 }
