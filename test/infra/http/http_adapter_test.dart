@@ -214,5 +214,24 @@ void main() {
         },
       ));
     });
+
+    test('should return data if GET returns 200', () async {
+      // act
+      final response = await sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(response, {'any_key': 'any_value'});
+    });
+
+    test('should return null if GET returns 200 with no data', () async {
+      // arrange
+      mockResponse(statusCode: 200);
+
+      // act
+      final response = await sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(response, null);
+    });
   });
 }
