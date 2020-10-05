@@ -30,6 +30,12 @@ class HttpAdapter implements IHttpClient {
           body: jsonBody,
         );
       }
+      if (method == 'GET') {
+        response = await client.get(
+          url,
+          headers: headers,
+        );
+      }
     } catch (_) {
       throw HttpError.serverError;
     }
