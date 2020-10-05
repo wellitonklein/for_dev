@@ -6,9 +6,10 @@ abstract class ITranslations {
   String get msgEmailInUse;
   String get msgWait;
 
-  String get password;
+  String get addAccount;
   String get confirmPassword;
   String get login;
   String get name;
-  String get addAccount;
+  String get password;
+  String get surveys;
 }

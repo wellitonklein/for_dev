@@ -34,4 +34,7 @@ class PtBr implements ITranslations {
 
   @override
   String get msgEmailInUse => 'O email já está em uso.';
+
+  @override
+  String get surveys => 'Enquetes';
 }
