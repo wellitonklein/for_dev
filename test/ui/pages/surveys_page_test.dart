@@ -8,8 +8,8 @@ class SurveysPresenterSpy extends Mock implements ISurveysPresenter {}
 
 void main() {
   SurveysPresenterSpy presenter;
-  testWidgets('should call LoadSurveys on page load',
-      (WidgetTester tester) async {
+
+  Future<void> loadPage(WidgetTester tester) async {
     presenter = SurveysPresenterSpy();
     final surveysPage = GetMaterialApp(
       initialRoute: '/surveys',
@@ -22,6 +22,11 @@ void main() {
     );
 
     await tester.pumpWidget(surveysPage);
+  }
+
+  testWidgets('should call LoadSurveys on page load',
+      (WidgetTester tester) async {
+    await loadPage(tester);
 
     verify(presenter.loadData()).called(1);
   });
