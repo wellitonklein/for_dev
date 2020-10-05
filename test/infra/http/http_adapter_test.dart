@@ -233,5 +233,27 @@ void main() {
       // assert
       expect(response, null);
     });
+
+    test('should return null if GET returns 204', () async {
+      // arrange
+      mockResponse(statusCode: 204);
+
+      // act
+      final response = await sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(response, null);
+    });
+
+    test('should return null if GET returns 204 with data', () async {
+      // arrange
+      mockResponse(statusCode: 204, body: '{"any_key":"any_value"}');
+
+      // act
+      final response = await sut.request(url: url, method: 'GET');
+
+      // assert
+      expect(response, null);
+    });
   });
 }
