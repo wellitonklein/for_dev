@@ -8,7 +8,7 @@ import 'package:for_dev/domain/entities/entities.dart';
 import 'package:for_dev/domain/helpers/helpers.dart';
 
 class FetchSecureCacheStorageSpy extends Mock
-    implements IFecthSecureCacheStorage {}
+    implements IFetchSecureCacheStorage {}
 
 void main() {
   LocalLoadCurrentAccount sut;
