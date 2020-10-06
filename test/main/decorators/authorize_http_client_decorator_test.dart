@@ -21,20 +21,21 @@ class AuthorizeHttpClientDecorator implements IHttpClient {
     Map body,
     Map headers,
   }) async {
-    String token;
     try {
-      token = await fetchSecureCacheStorage.fetchSecure(key: 'token');
-    } catch (error) {
+      final token = await fetchSecureCacheStorage.fetchSecure(key: 'token');
+      final authorizedHeaders = headers ?? {}
+        ..addAll({'x-access-token': token});
+      return await decoratee.request(
+        url: url,
+        method: method,
+        body: body,
+        headers: authorizedHeaders,
+      );
+    } on HttpError {
+      rethrow;
+    } catch (_) {
       throw HttpError.forbidden;
     }
-    final authorizedHeaders = headers ?? {}
-      ..addAll({'x-access-token': token});
-    return await decoratee.request(
-      url: url,
-      method: method,
-      body: body,
-      headers: authorizedHeaders,
-    );
   }
 }
 
@@ -65,15 +66,22 @@ void main() {
     mockTokenCall().thenThrow(Exception());
   }
 
+  PostExpectation mockHttpResponseCall() => when(
+        httpClient.request(
+          url: anyNamed('url'),
+          method: anyNamed('method'),
+          body: anyNamed('body'),
+          headers: anyNamed('headers'),
+        ),
+      );
+
   void mockHttpResponse() {
     httpResponse = faker.randomGenerator.string(50, min: 50);
-    when(httpClient.request(
-      url: anyNamed('url'),
-      method: anyNamed('method'),
-      body: anyNamed('body'),
-      headers: anyNamed('headers'),
-    )).thenAnswer((_) async => httpResponse);
+    mockHttpResponseCall().thenAnswer((_) async => httpResponse);
   }
+
+  void mockHttpResponseError(HttpError error) =>
+      mockHttpResponseCall().thenThrow(error);
 
   setUp(() {
     fetchSecureCacheStorage = FetchSecureCacheStorageSpy();
@@ -138,5 +146,14 @@ void main() {
     final future = sut.request(url: url, method: method, body: body);
     // assert
     expect(future, throwsA(HttpError.forbidden));
+  });
+
+  test('should rethrow if decoratee throws', () async {
+    // arrange
+    mockHttpResponseError(HttpError.badRequest);
+    // act
+    final future = sut.request(url: url, method: method, body: body);
+    // assert
+    expect(future, throwsA(HttpError.badRequest));
   });
 }
