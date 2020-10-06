@@ -52,13 +52,29 @@ void main() {
         method: 'POST',
         body: {'any_key': 'any_value'},
       );
-
       // assert
       verify(client.post(
         url,
         headers: {
           'content-type': 'application/json',
           'accept': 'application/json',
+        },
+        body: '{"any_key":"any_value"}',
+      ));
+
+      await sut.request(
+        url: url,
+        method: 'POST',
+        body: {'any_key': 'any_value'},
+        headers: {'any_header': 'any_value'},
+      );
+      // assert
+      verify(client.post(
+        url,
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+          'any_header': 'any_value',
         },
         body: '{"any_key":"any_value"}',
       ));
@@ -208,13 +224,25 @@ void main() {
         url: url,
         method: 'GET',
       );
-
       // assert
       verify(client.get(
         url,
         headers: {
           'content-type': 'application/json',
           'accept': 'application/json',
+        },
+      ));
+
+      // act
+      await sut.request(
+          url: url, method: 'GET', headers: {'any_header': 'any_value'});
+      // assert
+      verify(client.get(
+        url,
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+          'any_header': 'any_value',
         },
       ));
     });

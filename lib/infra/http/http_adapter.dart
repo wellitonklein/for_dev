@@ -10,15 +10,17 @@ class HttpAdapter implements IHttpClient {
 
   HttpAdapter({@required this.client});
 
-  Future<Map> request({
+  Future<dynamic> request({
     @required String url,
     @required String method,
     Map body,
+    Map headers,
   }) async {
-    final headers = {
-      'content-type': 'application/json',
-      'accept': 'application/json',
-    };
+    final defaultHeaders = headers?.cast<String, String>() ?? {}
+      ..addAll({
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      });
     final jsonBody =
         (body != null && body.isNotEmpty) ? jsonEncode(body) : null;
     var response = Response('', 500);
@@ -26,14 +28,14 @@ class HttpAdapter implements IHttpClient {
       if (method == 'POST') {
         response = await client.post(
           url,
-          headers: headers,
+          headers: defaultHeaders,
           body: jsonBody,
         );
       }
       if (method == 'GET') {
         response = await client.get(
           url,
-          headers: headers,
+          headers: defaultHeaders,
         );
       }
     } catch (_) {
