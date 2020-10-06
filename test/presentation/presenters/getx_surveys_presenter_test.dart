@@ -17,10 +17,17 @@ class GetxSurveysPresenter {
 class LoadSurveysSpy extends Mock implements ILoadSurveys {}
 
 void main() {
+  LoadSurveysSpy loadSurveys;
+  GetxSurveysPresenter sut;
+
+  setUp(() {
+    loadSurveys = LoadSurveysSpy();
+    sut = GetxSurveysPresenter(loadSurveys: loadSurveys);
+  });
+
   test('should call LoadSurveys on loadData', () async {
     // arrange
-    final loadSurveys = LoadSurveysSpy();
-    final sut = GetxSurveysPresenter(loadSurveys: loadSurveys);
+
     // act
     await sut.loadData();
     // assert
