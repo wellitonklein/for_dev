@@ -18,8 +18,8 @@ class HttpAdapter implements IHttpClient {
   }) async {
     final defaultHeaders = headers?.cast<String, String>() ?? {}
       ..addAll({
-        'content-type': 'application/json',
-        'accept': 'application/json',
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
       });
     final jsonBody =
         (body != null && body.isNotEmpty) ? jsonEncode(body) : null;
@@ -45,7 +45,7 @@ class HttpAdapter implements IHttpClient {
     return _handleResponse(response);
   }
 
-  Map _handleResponse(Response response) {
+  dynamic _handleResponse(Response response) {
     if (response.statusCode == 200) {
       return response.body.isEmpty ? null : jsonDecode(response.body);
     }
