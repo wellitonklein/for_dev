@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
 
-abstract class IFetchCacheStorage {
+abstract class ICacheStorage {
   Future<dynamic> fetch({@required String key});
 }
