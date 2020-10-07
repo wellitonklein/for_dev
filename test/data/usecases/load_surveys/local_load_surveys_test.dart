@@ -1,36 +1,11 @@
 import 'package:faker/faker.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:meta/meta.dart';
 
-import 'package:for_dev/data/models/models.dart';
+import 'package:for_dev/data/cache/cache.dart';
+import 'package:for_dev/data/usecases/usecases.dart';
 import 'package:for_dev/domain/entities/entities.dart';
 import 'package:for_dev/domain/helpers/helpers.dart';
-
-class LocalLoadSurveys {
-  final IFetchCacheStorage fetchCacheStorage;
-
-  LocalLoadSurveys({@required this.fetchCacheStorage});
-
-  Future<List<SurveyEntity>> load() async {
-    try {
-      final response = await fetchCacheStorage.fetch(key: 'surveys');
-      if (response?.isEmpty != false) {
-        throw Exception();
-      }
-      return response
-          .map<SurveyEntity>(
-              (json) => LocalSurveyModel.fromJson(json).toEntity())
-          .toList();
-    } catch (_) {
-      throw DomainError.unexpected;
-    }
-  }
-}
-
-abstract class IFetchCacheStorage {
-  Future<dynamic> fetch({@required String key});
-}
 
 class FetchCacheStorageSpy extends Mock implements IFetchCacheStorage {}
 
