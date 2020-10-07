@@ -18,8 +18,8 @@ class HttpAdapter implements IHttpClient {
   }) async {
     final defaultHeaders = headers?.cast<String, String>() ?? {}
       ..addAll({
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
+        'content-type': 'application/json',
+        'accept': 'application/json',
       });
     final jsonBody =
         (body != null && body.isNotEmpty) ? jsonEncode(body) : null;
