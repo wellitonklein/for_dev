@@ -19,10 +19,15 @@ abstract class IFetchCacheStorage {
 class FetchCacheStorageSpy extends Mock implements IFetchCacheStorage {}
 
 void main() {
+  FetchCacheStorageSpy fetchCacheStorage;
+  LocalLoadSurveys sut;
+
+  setUp(() {
+    fetchCacheStorage = FetchCacheStorageSpy();
+    sut = LocalLoadSurveys(fetchCacheStorage: fetchCacheStorage);
+  });
+
   test('should call FetchCacheStorage with correct key', () async {
-    // arrange
-    final fetchCacheStorage = FetchCacheStorageSpy();
-    final sut = LocalLoadSurveys(fetchCacheStorage: fetchCacheStorage);
     // act
     await sut.load();
     // assert
