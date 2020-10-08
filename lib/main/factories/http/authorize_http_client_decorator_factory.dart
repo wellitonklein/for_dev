@@ -4,5 +4,5 @@ import '../factories.dart';
 
 IHttpClient makeAuthorizeHttpClientDecorator() => AuthorizeHttpClientDecorator(
       decoratee: makeHttpAdapter(),
-      fetchSecureCacheStorage: makeLocalStorageAdapter(),
+      fetchSecureCacheStorage: makeSecureStorageAdapter(),
     );
