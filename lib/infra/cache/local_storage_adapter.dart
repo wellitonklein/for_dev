@@ -6,7 +6,7 @@ class LocalStorageAdapter {
 
   LocalStorageAdapter({@required this.localStorage});
 
-  Future<void> fetch({@required String key}) async {
+  Future<dynamic> fetch({@required String key}) async {
     await localStorage.getItem(key);
   }
 
