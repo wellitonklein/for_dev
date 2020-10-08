@@ -132,8 +132,6 @@ void main() {
     });
   });
 
-  // !
-
   group('validate', () {
     CacheStorageSpy cacheStorage;
     LocalLoadSurveys sut;
@@ -176,6 +174,22 @@ void main() {
       await sut.validate();
       // assert
       verify(cacheStorage.fetch(key: 'surveys')).called(1);
+    });
+
+    test('should delete cache if it is invalid', () async {
+      // arrange
+      mockFetch([
+        {
+          'id': faker.guid.guid(),
+          'question': faker.randomGenerator.string(50, min: 10),
+          'date': 'invalid_date',
+          'didAnswer': 'false',
+        },
+      ]);
+      // act
+      await sut.validate();
+      // assert
+      verify(cacheStorage.delete(key: 'surveys')).called(1);
     });
   });
 }
