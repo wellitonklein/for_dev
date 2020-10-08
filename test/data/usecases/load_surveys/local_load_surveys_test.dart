@@ -131,4 +131,51 @@ void main() {
       expect(future, throwsA(DomainError.unexpected));
     });
   });
+
+  // !
+
+  group('validate', () {
+    CacheStorageSpy cacheStorage;
+    LocalLoadSurveys sut;
+    List<Map> data;
+
+    List<Map> mockValidData() => [
+          {
+            'id': faker.guid.guid(),
+            'question': faker.randomGenerator.string(50, min: 10),
+            'date': '1969-07-20 00:00:00Z',
+            'didAnswer': 'false',
+          },
+          {
+            'id': faker.guid.guid(),
+            'question': faker.randomGenerator.string(50, min: 10),
+            'date': '1969-07-20 00:00:00Z',
+            'didAnswer': 'true',
+          },
+        ];
+
+    PostExpectation mockFetchCall() =>
+        when(cacheStorage.fetch(key: anyNamed('key')));
+
+    void mockFetch(List<Map> list) {
+      data = list;
+
+      mockFetchCall().thenAnswer((_) async => data);
+    }
+
+    //void mockFetchError() => mockFetchCall().thenThrow(Exception());
+
+    setUp(() {
+      cacheStorage = CacheStorageSpy();
+      sut = LocalLoadSurveys(cacheStorage: cacheStorage);
+      mockFetch(mockValidData());
+    });
+
+    test('should call FetchCacheStorage with correct key', () async {
+      // act
+      await sut.validate();
+      // assert
+      verify(cacheStorage.fetch(key: 'surveys')).called(1);
+    });
+  });
 }
