@@ -17,10 +17,7 @@ class LocalLoadSurveys implements ILoadSurveys {
       if (response?.isEmpty != false) {
         throw Exception();
       }
-      return response
-          .map<SurveyEntity>(
-              (json) => LocalSurveyModel.fromJson(json).toEntity())
-          .toList();
+      return _map(response);
     } catch (_) {
       throw DomainError.unexpected;
     }
@@ -29,13 +26,15 @@ class LocalLoadSurveys implements ILoadSurveys {
   Future<void> validate() async {
     final response = await cacheStorage.fetch(key: 'surveys');
     try {
-      response
-          .map<SurveyEntity>(
-            (json) => LocalSurveyModel.fromJson(json).toEntity(),
-          )
-          .toList();
+      _map(response);
     } catch (_) {
       await cacheStorage.delete(key: 'surveys');
     }
   }
+
+  List<SurveyEntity> _map(List<Map> list) => list
+      .map<SurveyEntity>(
+        (json) => LocalSurveyModel.fromJson(json).toEntity(),
+      )
+      .toList();
 }
