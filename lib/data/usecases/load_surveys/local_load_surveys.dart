@@ -24,8 +24,8 @@ class LocalLoadSurveys implements ILoadSurveys {
   }
 
   Future<void> validate() async {
-    final response = await cacheStorage.fetch(key: 'surveys');
     try {
+      final response = await cacheStorage.fetch(key: 'surveys');
       _map(response);
     } catch (_) {
       await cacheStorage.delete(key: 'surveys');
