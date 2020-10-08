@@ -10,6 +10,7 @@ class LocalStorageAdapter {
   LocalStorageAdapter({@required this.localStorage});
 
   Future<void> save({@required String key, @required dynamic value}) async {
+    await localStorage.deleteItem(key);
     await localStorage.setItem(key, value);
   }
 }
@@ -33,6 +34,7 @@ void main() {
     // act
     await sut.save(key: key, value: value);
     // assert
+    verify(localStorage.deleteItem(key)).called(1);
     verify(localStorage.setItem(key, value)).called(1);
   });
 }
