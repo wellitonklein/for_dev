@@ -13,10 +13,10 @@ void main() {
   String key;
   dynamic value;
 
-  void mockDeleteItemError() =>
+  void mockDeleteError() =>
       when(localStorage.deleteItem(any)).thenThrow(Exception());
 
-  void mockSetItemError() =>
+  void mockSaveError() =>
       when(localStorage.setItem(any, any)).thenThrow(Exception());
 
   setUp(() {
@@ -37,7 +37,7 @@ void main() {
 
     test('should throw if deleteItem throws', () async {
       // arrange
-      mockDeleteItemError();
+      mockDeleteError();
       // act
       final future = sut.save(key: key, value: value);
       // assert
@@ -46,7 +46,7 @@ void main() {
 
     test('should throw if deleteItem throws', () async {
       // arrange
-      mockSetItemError();
+      mockSaveError();
       // act
       final future = sut.save(key: key, value: value);
       // assert
