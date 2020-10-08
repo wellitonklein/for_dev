@@ -75,8 +75,10 @@ void main() {
   group('fetch', () {
     String response;
 
-    void mockFetch() =>
-        when(localStorage.getItem(any)).thenAnswer((_) async => response);
+    PostExpectation mockFetchCall() => when(localStorage.getItem(any));
+
+    void mockFetch() => mockFetchCall().thenAnswer((_) async => response);
+    void mockFetchError() => mockFetchCall().thenThrow(Exception());
 
     setUp(() {
       mockFetch();
@@ -94,6 +96,15 @@ void main() {
       final data = await sut.fetch(key: key);
       // assert
       expect(data, response);
+    });
+
+    test('should throw if getItem throws', () async {
+      // arrange
+      mockFetchError();
+      // act
+      final future = sut.fetch(key: key);
+      // assert
+      expect(future, throwsA(TypeMatcher<Exception>()));
     });
   });
 }
