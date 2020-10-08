@@ -191,5 +191,19 @@ void main() {
       // assert
       verify(cacheStorage.delete(key: 'surveys')).called(1);
     });
+
+    test('should delete cache if it is incomplete', () async {
+      // arrange
+      mockFetch([
+        {
+          'id': faker.guid.guid(),
+          'didAnswer': 'false',
+        },
+      ]);
+      // act
+      await sut.validate();
+      // assert
+      verify(cacheStorage.delete(key: 'surveys')).called(1);
+    });
   });
 }
