@@ -1,7 +1,7 @@
 import '../../../../presentation/dependencies/dependencies.dart';
 import '../../../../validation/dependencies/dependencies.dart';
-import '../../../../validation/validators/validators.dart';
 import '../../../builders/builders.dart';
+import '../../../composites/composites.dart';
 
 IValidation makeLoginValidation() {
   return ValidationComposite(validations: makeLoginValidations());

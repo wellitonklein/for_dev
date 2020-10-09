@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
 import '../../presentation/dependencies/dependencies.dart';
-import '../dependencies/dependencies.dart';
+import '../../validation/dependencies/dependencies.dart';
 
 class ValidationComposite implements IValidation {
   final List<IFieldValidation> validations;
