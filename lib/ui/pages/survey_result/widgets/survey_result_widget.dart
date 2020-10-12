@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../viewmodels/viewmodels.dart';
+
 class SurveyResultWidget extends StatelessWidget {
+  final SurveyResultViewModel viewModel;
+
+  const SurveyResultWidget({@required this.viewModel});
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 4,
+      itemCount: viewModel.answers.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
           return Container(
@@ -17,7 +23,7 @@ class SurveyResultWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).disabledColor.withAlpha(90),
             ),
-            child: Text('Qual é o seu framework web favorito?'),
+            child: Text(viewModel.question),
           );
         }
         return Column(
@@ -30,15 +36,17 @@ class SurveyResultWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.network(
-                    'https://pbs.twimg.com/profile_images/875996174305472512/upM71pVR_400x400.jpg',
-                    width: 40,
-                  ),
+                  viewModel.answers[index - 1].image != null
+                      ? Image.network(
+                          viewModel.answers[index - 1].image,
+                          width: 40,
+                        )
+                      : const SizedBox(height: 0),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
-                        'Vue.js',
+                        viewModel.answers[index - 1].answer,
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -46,20 +54,16 @@ class SurveyResultWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '100%',
+                    viewModel.answers[index - 1].percent,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).primaryColorDark,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Icon(
-                      Icons.check_circle,
-                      color: Theme.of(context).highlightColor,
-                    ),
-                  ),
+                  viewModel.answers[index - 1].isCurrentAnswer
+                      ? ActiveIconWidget()
+                      : DisabledIconWidget()
                 ],
               ),
             ),
@@ -67,6 +71,32 @@ class SurveyResultWidget extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class ActiveIconWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Icon(
+        Icons.check_circle,
+        color: Theme.of(context).highlightColor,
+      ),
+    );
+  }
+}
+
+class DisabledIconWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Icon(
+        Icons.check_circle,
+        color: Theme.of(context).disabledColor,
+      ),
     );
   }
 }

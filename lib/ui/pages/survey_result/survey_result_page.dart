@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/widgets.dart';
 import 'survey_result_presenter_interface.dart';
+import 'viewmodels/viewmodels.dart';
 import 'widgets/widgets.dart';
 
 class SurveyResultPage extends StatelessWidget {
@@ -25,7 +26,7 @@ class SurveyResultPage extends StatelessWidget {
 
         presenter.loadData();
 
-        return StreamBuilder<dynamic>(
+        return StreamBuilder<SurveyResultViewModel>(
             stream: presenter.surveyResultStream,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
@@ -36,7 +37,7 @@ class SurveyResultPage extends StatelessWidget {
               }
 
               if (snapshot.hasData) {
-                return SurveyResultWidget();
+                return SurveyResultWidget(viewModel: snapshot.data);
               }
 
               return SizedBox(height: 0);
