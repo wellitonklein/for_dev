@@ -3,5 +3,5 @@ import 'package:flutter/material.dart';
 import '../../../../ui/pages/pages.dart';
 
 Widget makeSurveyResultPage() {
-  return SurveyResultPage();
+  return SurveyResultPage(presenter: null);
 }
