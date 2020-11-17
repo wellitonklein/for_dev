@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:for_dev/ui/helpers/helpers.dart';
 import 'package:get/route_manager.dart';
 
 import 'package:for_dev/ui/helpers/errors/errors.dart';
@@ -14,21 +15,26 @@ void main() {
   SurveysPresenterSpy presenter;
   StreamController<bool> isLoadingController;
   StreamController<List<SurveyViewModel>> surveysController;
+  StreamController<String> navigateToController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
     surveysController = StreamController<List<SurveyViewModel>>();
+    navigateToController = StreamController<String>();
   }
 
   void mockStreams() {
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
     when(presenter.surveysStream).thenAnswer((_) => surveysController.stream);
+    when(presenter.navigateToStream)
+        .thenAnswer((_) => navigateToController.stream);
   }
 
   void closeStreams() {
     isLoadingController.close();
     surveysController.close();
+    navigateToController.close();
   }
 
   Future<void> loadPage(WidgetTester tester) async {
@@ -41,6 +47,10 @@ void main() {
         GetPage(
           name: '/surveys',
           page: () => SurveysPage(presenter: presenter),
+        ),
+        GetPage(
+          name: '/fake_page',
+          page: () => Scaffold(body: const Text('fake page')),
         ),
       ],
     );
@@ -150,4 +160,30 @@ void main() {
 
     verify(presenter.loadData()).called(2);
   });
+
+  testWidgets('should call goToSurveyResult on survey click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveysController.add(makeSurveys());
+    await tester.pump();
+
+    await tester.tap(find.text('Question 1'));
+    await tester.pump();
+
+    verify(presenter.goToSurveyResult('1')).called(1);
+  });
+
+  testWidgets(
+    'should change page',
+    (WidgetTester tester) async {
+      await loadPage(tester);
+
+      navigateToController.add('/fake_page');
+      await tester.pumpAndSettle();
+
+      expect(Get.currentRoute, '/fake_page');
+      expect(find.text('fake page'), findsOneWidget);
+    },
+  );
 }
