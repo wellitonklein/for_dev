@@ -18,7 +18,7 @@ class AppWidget extends StatelessWidget {
       title: '4Dev',
       debugShowCheckedModeBanner: false,
       theme: makeAppTheme(),
-      initialRoute: '/survey_result/3',
+      initialRoute: '/',
       getPages: [
         GetPage(
           name: '/',
