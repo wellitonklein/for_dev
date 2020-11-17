@@ -91,4 +91,12 @@ void main() {
     // act
     await sut.loadData();
   });
+
+  test('should go to SurveyResultPage on survey click', () async {
+    sut.navigateToStream
+        .listen(expectAsync1((page) => expect(page, '/survey_result/1')));
+
+    // act
+    sut.goToSurveyResult('1');
+  });
 }
