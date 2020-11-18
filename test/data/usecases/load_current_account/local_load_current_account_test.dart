@@ -16,9 +16,9 @@ void main() {
   String token;
 
   PostExpectation mockFetchSecureCall() =>
-      when(fetchSecureCacheStorage.fetchSecure(key: anyNamed('key')));
+      when(fetchSecureCacheStorage.fetch(key: anyNamed('key')));
 
-  void mockFetchSecure() {
+  void mockfetch() {
     mockFetchSecureCall().thenAnswer((_) async => token);
   }
 
@@ -32,7 +32,7 @@ void main() {
       fetchSecureCacheStorage: fetchSecureCacheStorage,
     );
     token = faker.guid.guid();
-    mockFetchSecure();
+    mockfetch();
   });
 
   test('should call FetchSecureCacheStorage with correct value', () async {
@@ -42,7 +42,7 @@ void main() {
     sut.load();
 
     // assert
-    verify(fetchSecureCacheStorage.fetchSecure(key: 'token'));
+    verify(fetchSecureCacheStorage.fetch(key: 'token'));
   });
 
   test('should return an AccountEntity', () async {
