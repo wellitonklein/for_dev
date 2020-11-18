@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_test_utils/image_test_utils.dart';
 
-import 'package:for_dev/ui/pages/survey_result/widgets/widgets.dart';
 import 'package:for_dev/ui/pages/pages.dart';
 import 'package:for_dev/ui/helpers/helpers.dart';
 import 'package:mockito/mockito.dart';
@@ -15,22 +14,27 @@ class SurveyResultPresenterSpy extends Mock implements ISurveyResultPresenter {}
 void main() {
   SurveyResultPresenterSpy presenter;
   StreamController<bool> isLoadingController;
+  StreamController<bool> isSessionExpiredController;
   StreamController<SurveyResultViewModel> surveyResultController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
+    isSessionExpiredController = StreamController<bool>();
     surveyResultController = StreamController<SurveyResultViewModel>();
   }
 
   void mockStreams() {
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
+    when(presenter.isSessionExpiredStream)
+        .thenAnswer((_) => isSessionExpiredController.stream);
     when(presenter.surveyResultStream)
         .thenAnswer((_) => surveyResultController.stream);
   }
 
   void closeStreams() {
     isLoadingController.close();
+    isSessionExpiredController.close();
     surveyResultController.close();
   }
 
@@ -44,6 +48,10 @@ void main() {
         GetPage(
           name: '/survey_result/:survey_id',
           page: () => SurveyResultPage(presenter: presenter),
+        ),
+        GetPage(
+          name: '/login',
+          page: () => Scaffold(body: const Text('fake login')),
         ),
       ],
     );
@@ -127,30 +135,31 @@ void main() {
     verify(presenter.loadData()).called(2);
   });
 
-  // testWidgets('should present valid data if loadSurveyResultStream success',
-  //     (WidgetTester tester) async {
-  //   await loadPage(tester);
+  testWidgets(
+    'should logout',
+    (WidgetTester tester) async {
+      await loadPage(tester);
 
-  //   surveyResultController.add(makeSurveyResult());
-  //   await provideMockedNetworkImages(() async {
-  //     await tester.pump();
-  //   });
+      isSessionExpiredController.add(true);
+      await tester.pumpAndSettle();
 
-  //   expect(
-  //     find.text('Algo de errado aconteceu. Tente novamente em breve.'),
-  //     findsNothing,
-  //   );
-  //   expect(find.text('Recarregar'), findsNothing);
-  //   expect(find.text('Question'), findsOneWidget);
-  //   expect(find.text('Answer 0'), findsOneWidget);
-  //   expect(find.text('Answer 1'), findsOneWidget);
-  //   expect(find.text('60%'), findsOneWidget);
-  //   expect(find.text('40%'), findsOneWidget);
-  //   expect(find.byType(ActiveIconWidget), findsOneWidget);
-  //   expect(find.byType(DisabledIconWidget), findsOneWidget);
+      expect(Get.currentRoute, '/login');
+      expect(find.text('fake login'), findsOneWidget);
+    },
+  );
 
-  //   final imageNetwork =
-  //       tester.widget<Image>(find.byType(Image)).image as NetworkImage;
-  //   expect(imageNetwork.url, 'Image 0');
-  // });
+  testWidgets(
+    'should not logout',
+    (WidgetTester tester) async {
+      await loadPage(tester);
+
+      isSessionExpiredController.add(false);
+      await tester.pumpAndSettle();
+      expect(Get.currentRoute, '/survey_result/any_survey_id');
+
+      isSessionExpiredController.add(null);
+      await tester.pumpAndSettle();
+      expect(Get.currentRoute, '/survey_result/any_survey_id');
+    },
+  );
 }
