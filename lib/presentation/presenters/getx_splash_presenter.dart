@@ -4,9 +4,7 @@ import '../../domain/usecases/usecases.dart';
 import '../../ui/pages/pages.dart';
 import 'mixins/mixins.dart';
 
-class GexSplashPresenter
-    with NavigationManagerMixin
-    implements ISplashPresenter {
+class GexSplashPresenter with NavigationMixin implements ISplashPresenter {
   final ILoadCurrentAccount loadCurrentAccount;
 
   GexSplashPresenter({@required this.loadCurrentAccount});

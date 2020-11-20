@@ -9,7 +9,7 @@ import '../../ui/pages/pages.dart';
 import 'mixins/mixins.dart';
 
 class GetxSurveysPresenter
-    with LoadingManagerMixin, SessionManagerMixin, NavigationManagerMixin
+    with LoadingMixin, SessionMixin, NavigationMixin
     implements ISurveysPresenter {
   final ILoadSurveys loadSurveys;
 

@@ -9,12 +9,7 @@ import '../dependencies/dependencies.dart';
 import 'mixins/mixins.dart';
 
 class GetxSignUpPresenter extends GetxController
-    with
-        AuthManagerMixin,
-        MainErrorManagerMixin,
-        LoadingManagerMixin,
-        NavigationManagerMixin,
-        FormValidManagerMixin
+    with AuthMixin, UIErrorMixin, LoadingMixin, NavigationMixin, FormValidMixin
     implements ISignUpPresenter {
   final IValidation validation;
   final IAddAccount addAccount;

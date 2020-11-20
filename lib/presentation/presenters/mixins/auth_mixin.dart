@@ -2,16 +2,15 @@ import 'package:get/get.dart';
 
 import '../../../ui/helpers/helpers.dart';
 
-mixin AuthManagerMixin {
+mixin AuthMixin {
   String _email;
   String _password;
 
   var _emailError = Rx<UIError>();
-  var _passwordError = Rx<UIError>();
-
   String get email => _email;
   set email(String value) => _email = value;
 
+  var _passwordError = Rx<UIError>();
   String get password => _password;
   set password(String value) => _password = value;
 

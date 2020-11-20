@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import 'mixins/mixins.dart';
 
 class GetxSurveyResultPresenter
-    with LoadingManagerMixin, SessionManagerMixin
+    with LoadingMixin, SessionMixin
     implements ISurveyResultPresenter {
   final ILoadSurveyResult loadSurveyResult;
   final String surveyId;
