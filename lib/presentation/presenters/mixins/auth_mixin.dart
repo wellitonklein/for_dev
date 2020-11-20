@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../../ui/helpers/helpers.dart';
 
-mixin AuthMixin {
+mixin AuthMixin on GetxController {
   String _email;
   String _password;
 

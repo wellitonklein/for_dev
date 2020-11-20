@@ -7,7 +7,7 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import 'mixins/mixins.dart';
 
-class GetxSurveyResultPresenter
+class GetxSurveyResultPresenter extends GetxController
     with LoadingMixin, SessionMixin
     implements ISurveyResultPresenter {
   final ILoadSurveyResult loadSurveyResult;

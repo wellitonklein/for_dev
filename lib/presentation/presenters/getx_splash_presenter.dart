@@ -1,10 +1,13 @@
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/usecases/usecases.dart';
 import '../../ui/pages/pages.dart';
 import 'mixins/mixins.dart';
 
-class GexSplashPresenter with NavigationMixin implements ISplashPresenter {
+class GexSplashPresenter extends GetxController
+    with NavigationMixin
+    implements ISplashPresenter {
   final ILoadCurrentAccount loadCurrentAccount;
 
   GexSplashPresenter({@required this.loadCurrentAccount});
