@@ -17,9 +17,21 @@ class LocalLoadSurveyResult implements ILoadSurveyResult {
       if (response?.isEmpty != false) {
         throw Exception();
       }
-      return LocalSurveyResultModel.fromJson(response).toEntity();
+      return _mapToEntity(response);
     } catch (_) {
       throw DomainError.unexpected;
     }
   }
+
+  Future<void> validate({@required String surveyId}) async {
+    try {
+      final response = await cacheStorage.fetch(key: 'survey_result/$surveyId');
+      _mapToEntity(response);
+    } catch (_) {
+      await cacheStorage.delete(key: 'survey_result/$surveyId');
+    }
+  }
+
+  SurveyResultEntity _mapToEntity(Map json) =>
+      LocalSurveyResultModel.fromJson(json).toEntity();
 }
