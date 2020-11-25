@@ -1,4 +1,5 @@
 import 'package:faker/faker.dart';
+import 'package:for_dev/domain/helpers/helpers.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:meta/meta.dart';
@@ -35,28 +36,35 @@ void main() {
   String surveyId;
   SurveyResultEntity surveyResult;
 
-  void mockSurveyResult() {
-    surveyResult = SurveyResultEntity(
-      surveyId: faker.guid.guid(),
-      question: faker.lorem.sentence(),
-      answers: [
-        SurveyAnswerEntity(
-          answer: faker.lorem.sentence(),
-          isCurrentAnswer: faker.randomGenerator.boolean(),
-          percent: faker.randomGenerator.integer(100),
-        ),
-      ],
-    );
-    when(remote.loadBySurvey(surveyId: anyNamed('surveyId')))
-        .thenAnswer((_) async => surveyResult);
+  SurveyResultEntity mockSurveyResult() => SurveyResultEntity(
+        surveyId: faker.guid.guid(),
+        question: faker.lorem.sentence(),
+        answers: [
+          SurveyAnswerEntity(
+            answer: faker.lorem.sentence(),
+            isCurrentAnswer: faker.randomGenerator.boolean(),
+            percent: faker.randomGenerator.integer(100),
+          ),
+        ],
+      );
+
+  PostExpectation mockRemoteLoadCall() =>
+      when(remote.loadBySurvey(surveyId: anyNamed('surveyId')));
+
+  void mockRemoteLoad() {
+    surveyResult = mockSurveyResult();
+    mockRemoteLoadCall().thenAnswer((_) async => surveyResult);
   }
+
+  void mockRemoteLoadError(DomainError error) =>
+      mockRemoteLoadCall().thenThrow(error);
 
   setUp(() {
     surveyId = faker.guid.guid();
     remote = RemoteLoadSurveyResultSpy();
     local = LocalLoadSurveyResultSpy();
     sut = RemoteLoadSurveyResultWithLocalFallback(remote: remote, local: local);
-    mockSurveyResult();
+    mockRemoteLoad();
   });
 
   test('should call remote loadBySurvey', () async {
@@ -87,5 +95,15 @@ void main() {
     final response = await sut.loadBySurvey(surveyId: surveyId);
     // assert
     expect(response, surveyResult);
+  });
+
+  test('should rethrow if remote loadBySurvey throws AccessDeniedError',
+      () async {
+    // arrange
+    mockRemoteLoadError(DomainError.accessDenied);
+    // act
+    final future = sut.loadBySurvey(surveyId: surveyId);
+    // assert
+    expect(future, throwsA(DomainError.accessDenied));
   });
 }
