@@ -229,4 +229,77 @@ void main() {
       verify(cacheStorage.delete(key: 'survey_result/$surveyId')).called(1);
     });
   });
+
+  group('save', () {
+    LocalLoadSurveyResult sut;
+    CacheStorageSpy cacheStorage;
+    SurveyResultEntity surveyResult;
+    String surveyId;
+
+    SurveyResultEntity mockSurveyResult() => SurveyResultEntity(
+          surveyId: faker.guid.guid(),
+          question: faker.lorem.sentence(),
+          answers: [
+            SurveyAnswerEntity(
+              image: faker.internet.httpUrl(),
+              answer: faker.lorem.sentence(),
+              isCurrentAnswer: true,
+              percent: 40,
+            ),
+            SurveyAnswerEntity(
+              answer: faker.lorem.sentence(),
+              isCurrentAnswer: false,
+              percent: 60,
+            ),
+          ],
+        );
+
+    PostExpectation mockSaveCall() =>
+        when(cacheStorage.save(key: anyNamed('key'), value: anyNamed('value')));
+
+    void mockSaveError() => mockSaveCall().thenThrow(Exception());
+
+    setUp(() {
+      surveyId = faker.guid.guid();
+      cacheStorage = CacheStorageSpy();
+      sut = LocalLoadSurveyResult(cacheStorage: cacheStorage);
+      surveyResult = mockSurveyResult();
+    });
+
+    test('should call FetchCacheStorage with correct values', () async {
+      // arrange
+      final object = {
+        'surveyId': surveyResult.surveyId,
+        'question': surveyResult.question,
+        'answers': [
+          {
+            'image': surveyResult.answers[0].image,
+            'answer': surveyResult.answers[0].answer,
+            'percent': '40',
+            'isCurrentAnswer': 'true',
+          },
+          {
+            'image': null,
+            'answer': surveyResult.answers[1].answer,
+            'percent': '60',
+            'isCurrentAnswer': 'false',
+          }
+        ],
+      };
+      // act
+      await sut.save(surveyId: surveyId, surveyResult: surveyResult);
+      // assert
+      verify(cacheStorage.save(key: 'survey_result/$surveyId', value: object))
+          .called(1);
+    });
+
+    test('should throw UnexpectedError if save throws', () async {
+      // arrange
+      mockSaveError();
+      // act
+      final future = sut.save(surveyId: surveyId, surveyResult: surveyResult);
+      // assert
+      expect(future, throwsA(DomainError.unexpected));
+    });
+  });
 }
