@@ -61,24 +61,6 @@ void main() {
     });
   }
 
-  SurveyResultViewModel makeSurveyResult() => SurveyResultViewModel(
-        surveyId: 'any id',
-        question: 'Question',
-        answers: [
-          SurveyAnswerViewModel(
-            image: 'Image 0',
-            answer: 'Answer 0',
-            isCurrentAnswer: true,
-            percent: '60%',
-          ),
-          SurveyAnswerViewModel(
-            answer: 'Answer 1',
-            isCurrentAnswer: false,
-            percent: '40%',
-          ),
-        ],
-      );
-
   tearDown(() {
     closeStreams();
   });

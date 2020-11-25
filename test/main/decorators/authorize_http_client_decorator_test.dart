@@ -9,14 +9,14 @@ import 'package:for_dev/main/decorators/decorators.dart';
 class FetchSecureCacheStorageSpy extends Mock
     implements IFetchSecureCacheStorage {}
 
-class deleteCacheStorageSpy extends Mock implements IDeleteSecureCacheStorage {}
+class DeleteCacheStorageSpy extends Mock implements IDeleteSecureCacheStorage {}
 
 class HttpClientSpy extends Mock implements IHttpClient {}
 
 void main() {
   AuthorizeHttpClientDecorator sut;
   FetchSecureCacheStorageSpy fetchSecureCacheStorage;
-  deleteCacheStorageSpy deleteCacheStorage;
+  DeleteCacheStorageSpy deleteCacheStorage;
   HttpClientSpy httpClient;
   String url;
   String method;
@@ -55,7 +55,7 @@ void main() {
 
   setUp(() {
     fetchSecureCacheStorage = FetchSecureCacheStorageSpy();
-    deleteCacheStorage = deleteCacheStorageSpy();
+    deleteCacheStorage = DeleteCacheStorageSpy();
     httpClient = HttpClientSpy();
     sut = AuthorizeHttpClientDecorator(
       fetchSecureCacheStorage: fetchSecureCacheStorage,
