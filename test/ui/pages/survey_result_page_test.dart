@@ -39,13 +39,18 @@ void main() {
   }
 
   SurveyResultViewModel makeSurveyResult() => SurveyResultViewModel(
-        surveyId: '1',
-        question: 'Alguma coisa',
+        surveyId: 'Any id',
+        question: 'Question',
         answers: [
           SurveyAnswerViewModel(
-            answer: 'Answer 1',
+            answer: 'Answer 0',
             isCurrentAnswer: true,
-            percent: '10%',
+            percent: '60%',
+          ),
+          SurveyAnswerViewModel(
+            answer: 'Answer 1',
+            isCurrentAnswer: false,
+            percent: '40%',
           ),
         ],
       );
@@ -168,5 +173,18 @@ void main() {
     await tester.tap(find.text('Answer 1'));
 
     verify(presenter.save(answer: 'Answer 1')).called(1);
+  });
+
+  testWidgets('should not call save on current answer item click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveyResultController.add(makeSurveyResult());
+    await provideMockedNetworkImages(() async {
+      await tester.pump();
+    });
+    await tester.tap(find.text('Answer 0'));
+
+    verifyNever(presenter.save(answer: 'Answer 0'));
   });
 }
