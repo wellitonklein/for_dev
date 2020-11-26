@@ -1,12 +1,12 @@
 import 'package:faker/faker.dart';
-import 'package:for_dev/domain/helpers/helpers.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:meta/meta.dart';
 
-import 'package:for_dev/data/usecases/usecases.dart';
 import 'package:for_dev/domain/entities/entities.dart';
 import 'package:for_dev/domain/usecases/usecases.dart';
+import 'package:for_dev/domain/helpers/helpers.dart';
+import 'package:for_dev/data/usecases/usecases.dart';
 
 class RemoteLoadSurveyResultWithLocalFallback implements ILoadSurveyResult {
   final RemoteLoadSurveyResult remote;
@@ -76,6 +76,9 @@ void main() {
     mockLocalLoadCall().thenAnswer((_) async => localResult);
   }
 
+  void mockLocalLoadError() =>
+      mockLocalLoadCall().thenThrow(DomainError.unexpected);
+
   setUp(() {
     surveyId = faker.guid.guid();
     remote = RemoteLoadSurveyResultSpy();
@@ -142,5 +145,15 @@ void main() {
     final response = await sut.loadBySurvey(surveyId: surveyId);
     // assert
     expect(response, localResult);
+  });
+
+  test('should throw UnexpectedError if local load fails', () async {
+    // arrange
+    mockRemoteLoadError(DomainError.unexpected);
+    mockLocalLoadError();
+    // act
+    final future = sut.loadBySurvey(surveyId: surveyId);
+    // assert
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
