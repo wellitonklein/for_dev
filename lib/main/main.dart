@@ -18,6 +18,7 @@ class AppWidget extends StatelessWidget {
       title: '4Dev',
       debugShowCheckedModeBanner: false,
       theme: makeAppTheme(),
+      navigatorObservers: [Get.put<RouteObserver>(RouteObserver<PageRoute>())],
       initialRoute: '/',
       getPages: [
         GetPage(
