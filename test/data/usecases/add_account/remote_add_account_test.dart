@@ -8,6 +8,8 @@ import 'package:for_dev/domain/helpers/helpers.dart';
 import 'package:for_dev/data/http/http.dart';
 import 'package:for_dev/data/usecases/usecases.dart';
 
+import '../../../mocks/mocks.dart';
+
 class HttpClientSpy extends Mock implements IHttpClient {}
 
 void main() {
@@ -15,9 +17,7 @@ void main() {
   IHttpClient httpClient;
   String url;
   AddAccountParams params;
-
-  Map mockValidData() =>
-      {'accessToken': faker.guid.guid(), 'name': faker.person.name()};
+  Map apiResult;
 
   PostExpectation mockRequest() => when(
         httpClient.request(
@@ -28,7 +28,8 @@ void main() {
       );
 
   void mockHttpData(Map data) {
-    mockRequest().thenAnswer((_) async => data);
+    apiResult = data;
+    mockRequest().thenAnswer((_) async => apiResult);
   }
 
   void mockHttpError(HttpError error) {
@@ -46,7 +47,7 @@ void main() {
       password: faker.internet.password(),
       passwordConfirmation: faker.internet.password(),
     );
-    mockHttpData(mockValidData());
+    mockHttpData(FakeAccountMock.makeApiJson());
   });
 
   test('should call HttpClient with correct value', () async {
@@ -117,14 +118,12 @@ void main() {
     'should return an Account if HttpClient returns 200',
     () async {
       // arrange
-      final validData = mockValidData();
-      mockHttpData(validData);
 
       // act
       final account = await sut.add(params: params);
 
       // assert
-      expect(account.token, validData['accessToken']);
+      expect(account.token, apiResult['accessToken']);
     },
   );
 
