@@ -87,7 +87,7 @@ void main() {
 
     test('should throw UnexpectedError if cache is invalid', () async {
       // arrange
-      mockFetch(FakeSurveyResultMock.makeInvalidCacheJson());
+      mockFetch(FakeSurveyResultMock.makeInvalidJson());
       // act
       final future = sut.loadBySurvey(surveyId: surveyId);
       // assert
@@ -146,7 +146,7 @@ void main() {
 
     test('should delete cache if it is invalid', () async {
       // arrange
-      mockFetch(FakeSurveyResultMock.makeInvalidCacheJson());
+      mockFetch(FakeSurveyResultMock.makeInvalidJson());
       // act
       await sut.validate(surveyId: surveyId);
       // assert

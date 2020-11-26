@@ -21,21 +21,6 @@ class FakeSurveyResultMock {
     };
   }
 
-  static Map makeInvalidCacheJson() {
-    return {
-      'surveyId': faker.guid.guid(),
-      'question': faker.lorem.sentence(),
-      'answers': [
-        {
-          'image': faker.internet.httpUrl(),
-          'answer': faker.lorem.sentence(),
-          'isCurrentAnswer': 'invalid bool',
-          'percent': 'invalid int',
-        }
-      ]
-    };
-  }
-
   static Map makeApiJson() {
     return {
       'surveyId': faker.guid.guid(),
@@ -56,6 +41,21 @@ class FakeSurveyResultMock {
         },
       ],
       'date': faker.date.dateTime().toIso8601String(),
+    };
+  }
+
+  static Map makeInvalidJson() {
+    return {
+      'surveyId': faker.guid.guid(),
+      'question': faker.lorem.sentence(),
+      'answers': [
+        {
+          'image': faker.internet.httpUrl(),
+          'answer': faker.lorem.sentence(),
+          'isCurrentAnswer': 'invalid bool',
+          'percent': 'invalid int',
+        }
+      ]
     };
   }
 }
