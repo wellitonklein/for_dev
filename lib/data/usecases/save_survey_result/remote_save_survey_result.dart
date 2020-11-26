@@ -1,9 +1,12 @@
 import 'package:meta/meta.dart';
 
+import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 import '../../http/http.dart';
+import '../../models/models.dart';
 
-class RemoteSaveSurveyResult {
+class RemoteSaveSurveyResult implements ISaveSurveyResult {
   final String url;
   final IHttpClient httpClient;
 
@@ -12,10 +15,14 @@ class RemoteSaveSurveyResult {
     @required this.httpClient,
   });
 
-  Future<void> save({String answer}) async {
+  Future<SurveyResultEntity> save({String answer}) async {
     try {
-      await httpClient
-          .request(url: url, method: 'PUT', body: {'answer': answer});
+      final response = await httpClient.request(
+        url: url,
+        method: 'PUT',
+        body: {'answer': answer},
+      );
+      return RemoteSurveyResultModel.fromJson(response).toEntity();
     } on HttpError catch (error) {
       throw error == HttpError.forbidden
           ? DomainError.accessDenied
