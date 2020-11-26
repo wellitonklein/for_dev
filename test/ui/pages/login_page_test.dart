@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:for_dev/ui/helpers/helpers.dart';
 import 'package:for_dev/ui/pages/pages.dart';
+
+import '../helpers/helpers.dart';
 
 class LoginPresenterSpy extends Mock implements ILoginPresenter {}
 
@@ -57,19 +58,10 @@ void main() {
     presenter = LoginPresenterSpy();
     initStreams();
     mockStreams();
-    final loginPage = GetMaterialApp(
-      initialRoute: '/login',
-      getPages: [
-        GetPage(name: '/login', page: () => LoginPage(presenter: presenter)),
-        GetPage(
-          name: '/fake_page',
-          page: () => Scaffold(
-            body: const Text('fake page'),
-          ),
-        ),
-      ],
-    );
-    await tester.pumpWidget(loginPage);
+    await tester.pumpWidget(makePage(
+      path: '/login',
+      page: () => LoginPage(presenter: presenter),
+    ));
   }
 
   tearDown(() {
@@ -257,7 +249,7 @@ void main() {
       navigateToController.add('/fake_page');
       await tester.pumpAndSettle();
 
-      expect(Get.currentRoute, '/fake_page');
+      expect(currentRoute, '/fake_page');
       expect(find.text('fake page'), findsOneWidget);
     },
   );
@@ -269,11 +261,11 @@ void main() {
 
       navigateToController.add('');
       await tester.pump();
-      expect(Get.currentRoute, '/login');
+      expect(currentRoute, '/login');
 
       navigateToController.add(null);
       await tester.pump();
-      expect(Get.currentRoute, '/login');
+      expect(currentRoute, '/login');
     },
   );
 

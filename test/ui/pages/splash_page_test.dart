@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/route_manager.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:for_dev/ui/pages/pages.dart';
+
+import '../helpers/helpers.dart';
 
 class SplashPresenterSpy extends Mock implements ISplashPresenter {}
 
@@ -18,21 +19,10 @@ void main() {
     navigateToController = StreamController<String>();
     when(presenter.navigateToStream)
         .thenAnswer((_) => navigateToController.stream);
-
-    await tester.pumpWidget(
-      GetMaterialApp(
-        initialRoute: '/',
-        getPages: [
-          GetPage(name: '/', page: () => SplashPage(presenter: presenter)),
-          GetPage(
-            name: '/any_route',
-            page: () => Scaffold(
-              body: const Text('fake page'),
-            ),
-          ),
-        ],
-      ),
-    );
+    await tester.pumpWidget(makePage(
+      path: '/',
+      page: () => SplashPage(presenter: presenter),
+    ));
   }
 
   tearDown(() {
@@ -62,10 +52,10 @@ void main() {
     (WidgetTester tester) async {
       await loadPage(tester);
 
-      navigateToController.add('/any_route');
+      navigateToController.add('/fake_page');
       await tester.pumpAndSettle();
 
-      expect(Get.currentRoute, '/any_route');
+      expect(currentRoute, '/fake_page');
       expect(find.text('fake page'), findsOneWidget);
     },
   );
@@ -77,11 +67,11 @@ void main() {
 
       navigateToController.add('');
       await tester.pump();
-      expect(Get.currentRoute, '/');
+      expect(currentRoute, '/');
 
       navigateToController.add(null);
       await tester.pump();
-      expect(Get.currentRoute, '/');
+      expect(currentRoute, '/');
     },
   );
 }
