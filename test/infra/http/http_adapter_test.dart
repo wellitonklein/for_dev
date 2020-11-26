@@ -354,4 +354,177 @@ void main() {
       expect(future, throwsA(HttpError.serverError));
     });
   });
+
+  group('PUT', () {
+    PostExpectation mockRequest() => when(
+        client.put(any, body: anyNamed('body'), headers: anyNamed('headers')));
+
+    void mockResponse({@required int statusCode, String body = ''}) {
+      mockRequest().thenAnswer((_) async => Response(body, statusCode));
+    }
+
+    void mockError() {
+      mockRequest().thenThrow(Exception);
+    }
+
+    setUp(() {
+      mockResponse(statusCode: 200, body: '{"any_key":"any_value"}');
+    });
+
+    test('should call PUT with correct values', () async {
+      // act
+      await sut.request(
+        url: url,
+        method: 'PUT',
+        body: {'any_key': 'any_value'},
+      );
+      // assert
+      verify(client.put(
+        url,
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: '{"any_key":"any_value"}',
+      ));
+
+      await sut.request(
+        url: url,
+        method: 'PUT',
+        body: {'any_key': 'any_value'},
+        headers: {'any_header': 'any_value'},
+      );
+      // assert
+      verify(client.put(
+        url,
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+          'any_header': 'any_value',
+        },
+        body: '{"any_key":"any_value"}',
+      ));
+    });
+
+    test('should call PUT without body', () async {
+      // act
+      await sut.request(
+        url: url,
+        method: 'PUT',
+      );
+
+      // assert
+      verify(client.put(
+        any,
+        headers: anyNamed('headers'),
+      ));
+    });
+
+    test('should return data if PUT returns 200', () async {
+      // act
+      final response = await sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(response, {'any_key': 'any_value'});
+    });
+
+    test('should return null if PUT returns 200 with no data', () async {
+      // arrange
+      mockResponse(statusCode: 200);
+
+      // act
+      final response = await sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(response, null);
+    });
+
+    test('should return null if PUT returns 204', () async {
+      // arrange
+      mockResponse(statusCode: 204);
+
+      // act
+      final response = await sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(response, null);
+    });
+
+    test('should return null if PUT returns 204 with data', () async {
+      // arrange
+      mockResponse(statusCode: 204, body: '{"any_key":"any_value"}');
+
+      // act
+      final response = await sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(response, null);
+    });
+
+    test('should return BadRequestError if PUT returns 400', () async {
+      // arrange
+      mockResponse(statusCode: 400);
+
+      // act
+      final future = sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(future, throwsA(HttpError.badRequest));
+    });
+
+    test('should return UnauthorizedError if PUT returns 401', () async {
+      // arrange
+      mockResponse(statusCode: 401);
+
+      // act
+      final future = sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(future, throwsA(HttpError.unauthorized));
+    });
+
+    test('should return ForbiddenError if PUT returns 403', () async {
+      // arrange
+      mockResponse(statusCode: 403);
+
+      // act
+      final future = sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(future, throwsA(HttpError.forbidden));
+    });
+
+    test('should return NotFoundError if PUT returns 404', () async {
+      // arrange
+      mockResponse(statusCode: 404);
+
+      // act
+      final future = sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(future, throwsA(HttpError.notFound));
+    });
+
+    test('should return ServerError if PUT returns 500', () async {
+      // arrange
+      mockResponse(statusCode: 500);
+
+      // act
+      final future = sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(future, throwsA(HttpError.serverError));
+    });
+
+    test('should return ServerError if PUT throws', () async {
+      // arrange
+      mockError();
+
+      // act
+      final future = sut.request(url: url, method: 'PUT');
+
+      // assert
+      expect(future, throwsA(HttpError.serverError));
+    });
+  });
 }
