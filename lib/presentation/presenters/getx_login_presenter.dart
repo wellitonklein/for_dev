@@ -6,7 +6,7 @@ import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../dependencies/dependencies.dart';
-import 'mixins/mixins.dart';
+import 'helpers/helpers.dart';
 
 class GetXLoginPresenter extends GetxController
     with AuthMixin, UIErrorMixin, LoadingMixin, NavigationMixin, FormValidMixin

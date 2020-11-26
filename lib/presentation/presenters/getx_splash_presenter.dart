@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 import '../../domain/usecases/usecases.dart';
 import '../../ui/pages/pages.dart';
-import 'mixins/mixins.dart';
+import 'helpers/helpers.dart';
 
 class GexSplashPresenter extends GetxController
     with NavigationMixin

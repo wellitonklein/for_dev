@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../ui/helpers/helpers.dart';
+import '../../../../ui/helpers/helpers.dart';
 
 mixin UIErrorMixin on GetxController {
   var _mainError = Rx<UIError>();

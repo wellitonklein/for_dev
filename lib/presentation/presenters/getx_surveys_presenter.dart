@@ -6,7 +6,7 @@ import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
-import 'mixins/mixins.dart';
+import 'helpers/helpers.dart';
 
 class GetxSurveysPresenter extends GetxController
     with LoadingMixin, SessionMixin, NavigationMixin
