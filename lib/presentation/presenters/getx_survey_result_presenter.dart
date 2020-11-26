@@ -50,4 +50,6 @@ class GetxSurveyResultPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  Future<void> save({String answer}) {}
 }

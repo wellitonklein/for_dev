@@ -32,7 +32,10 @@ class SurveyResultPage extends StatelessWidget with LoadingMixin, SessionMixin {
               }
 
               if (snapshot.hasData) {
-                return SurveyResultWidget(viewModel: snapshot.data);
+                return SurveyResultWidget(
+                  viewModel: snapshot.data,
+                  onSave: presenter.save,
+                );
               }
 
               return SizedBox(height: 0);
