@@ -13,8 +13,8 @@ import 'package:for_dev/ui/pages/pages.dart';
 class LoadSurveysSpy extends Mock implements ILoadSurveys {}
 
 void main() {
-  LoadSurveysSpy loadSurveys;
   GetxSurveysPresenter sut;
+  LoadSurveysSpy loadSurveys;
 
   List<SurveyEntity> mockValidData() => [
         SurveyEntity(
@@ -106,10 +106,16 @@ void main() {
   });
 
   test('should go to SurveyResultPage on survey click', () async {
-    sut.navigateToStream
-        .listen(expectAsync1((page) => expect(page, '/survey_result/1')));
+    expectLater(
+      sut.navigateToStream,
+      emitsInOrder([
+        '/survey_result/any_router',
+        '/survey_result/other_router',
+      ]),
+    );
 
     // act
-    sut.goToSurveyResult('1');
+    sut.goToSurveyResult('any_router');
+    sut.goToSurveyResult('other_router');
   });
 }
