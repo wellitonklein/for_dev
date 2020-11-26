@@ -28,12 +28,12 @@ class HttpAdapter implements IHttpClient {
       if (method == 'POST') {
         response = await client
             .post(url, headers: defaultHeaders, body: jsonBody)
-            .timeout(Duration(seconds: 10));
+            .timeout(Duration(seconds: 5));
       }
       if (method == 'GET') {
         response = await client
             .get(url, headers: defaultHeaders)
-            .timeout(Duration(seconds: 10));
+            .timeout(Duration(seconds: 5));
       }
     } catch (_) {
       throw HttpError.serverError;
