@@ -8,7 +8,8 @@ ISurveyResultPresenter makeGetxSurveyResultPresenter({
   @required String surveyId,
 }) {
   return GetxSurveyResultPresenter(
-    loadSurveyResult: makeRemoteLoadSurveyResultWithLocalFallback(surveyId),
     surveyId: surveyId,
+    loadSurveyResult: makeRemoteLoadSurveyResultWithLocalFallback(surveyId),
+    saveSurveyResult: makeRemoteSaveSurveyResult(surveyId),
   );
 }
