@@ -53,23 +53,32 @@ class GetxSurveyResultPresenter extends GetxController
     }
   }
 
-  Future<void> save({String answer}) async {
-    isLoading = true;
-    final response = await saveSurveyResult.save(answer: answer);
-    _surveyResult.value = SurveyResultViewModel(
-      surveyId: response.surveyId,
-      question: response.question,
-      answers: response.answers
-          .map(
-            (answer) => SurveyAnswerViewModel(
-              image: answer.image,
-              answer: answer.answer,
-              isCurrentAnswer: answer.isCurrentAnswer,
-              percent: '${answer.percent}%',
-            ),
-          )
-          .toList(),
-    );
-    isLoading = false;
+  Future<void> save({@required String answer}) async {
+    try {
+      isLoading = true;
+      final response = await saveSurveyResult.save(answer: answer);
+      _surveyResult.value = SurveyResultViewModel(
+        surveyId: response.surveyId,
+        question: response.question,
+        answers: response.answers
+            .map(
+              (answer) => SurveyAnswerViewModel(
+                image: answer.image,
+                answer: answer.answer,
+                isCurrentAnswer: answer.isCurrentAnswer,
+                percent: '${answer.percent}%',
+              ),
+            )
+            .toList(),
+      );
+    } on DomainError catch (error) {
+      if (error == DomainError.accessDenied) {
+        isSessionExpired = true;
+      } else {
+        _surveyResult.subject.addError(UIError.unexpected.description);
+      }
+    } finally {
+      isLoading = false;
+    }
   }
 }
