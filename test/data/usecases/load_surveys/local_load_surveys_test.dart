@@ -169,21 +169,6 @@ void main() {
     LocalLoadSurveys sut;
     List<SurveyEntity> surveys;
 
-    List<SurveyEntity> mockSurveys() => [
-          SurveyEntity(
-            id: faker.guid.guid(),
-            question: faker.randomGenerator.string(50, min: 10),
-            dateTime: DateTime.utc(1969, 07, 20),
-            didAnswer: false,
-          ),
-          SurveyEntity(
-            id: faker.guid.guid(),
-            question: faker.randomGenerator.string(50, min: 10),
-            dateTime: DateTime.utc(1970, 05, 12),
-            didAnswer: true,
-          ),
-        ];
-
     PostExpectation mockSaveCall() =>
         when(cacheStorage.save(key: anyNamed('key'), value: anyNamed('value')));
 
@@ -192,7 +177,7 @@ void main() {
     setUp(() {
       cacheStorage = CacheStorageSpy();
       sut = LocalLoadSurveys(cacheStorage: cacheStorage);
-      surveys = mockSurveys();
+      surveys = FakeSurveysMock.makeEntities();
     });
 
     test('should call FetchCacheStorage with correct values', () async {

@@ -1,4 +1,5 @@
 import 'package:faker/faker.dart';
+import 'package:for_dev/domain/entities/entities.dart';
 
 class FakeSurveyResultMock {
   static Map makeCacheJson() {
@@ -58,4 +59,22 @@ class FakeSurveyResultMock {
       ]
     };
   }
+
+  static SurveyResultEntity makeEntity() => SurveyResultEntity(
+        surveyId: faker.guid.guid(),
+        question: faker.lorem.sentence(),
+        answers: [
+          SurveyAnswerEntity(
+            image: faker.internet.httpUrl(),
+            answer: faker.lorem.sentence(),
+            isCurrentAnswer: true,
+            percent: 40,
+          ),
+          SurveyAnswerEntity(
+            answer: faker.lorem.sentence(),
+            isCurrentAnswer: false,
+            percent: 60,
+          ),
+        ],
+      );
 }

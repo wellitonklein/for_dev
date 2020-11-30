@@ -1,4 +1,5 @@
 import 'package:faker/faker.dart';
+import 'package:for_dev/domain/entities/entities.dart';
 
 class FakeSurveysMock {
   static List<Map> makeCacheJson() {
@@ -52,6 +53,23 @@ class FakeSurveysMock {
         'date': 'invalid_date',
         'didAnswer': 'false',
       },
+    ];
+  }
+
+  static List<SurveyEntity> makeEntities() {
+    return [
+      SurveyEntity(
+        id: faker.guid.guid(),
+        question: faker.randomGenerator.string(50, min: 10),
+        dateTime: DateTime.utc(1969, 07, 20),
+        didAnswer: false,
+      ),
+      SurveyEntity(
+        id: faker.guid.guid(),
+        question: faker.randomGenerator.string(50, min: 10),
+        dateTime: DateTime.utc(1970, 05, 12),
+        didAnswer: true,
+      ),
     ];
   }
 }

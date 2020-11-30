@@ -1,4 +1,3 @@
-import 'package:faker/faker.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -10,26 +9,13 @@ import 'package:for_dev/presentation/presenters/presenters.dart';
 import 'package:for_dev/ui/helpers/errors/errors.dart';
 import 'package:for_dev/ui/pages/pages.dart';
 
+import '../../mocks/mocks.dart';
+
 class LoadSurveysSpy extends Mock implements ILoadSurveys {}
 
 void main() {
   GetxSurveysPresenter sut;
   LoadSurveysSpy loadSurveys;
-
-  List<SurveyEntity> mockValidData() => [
-        SurveyEntity(
-          id: faker.guid.guid(),
-          question: faker.lorem.sentence(),
-          dateTime: DateTime(2020, 2, 20),
-          didAnswer: true,
-        ),
-        SurveyEntity(
-          id: faker.guid.guid(),
-          question: faker.lorem.sentence(),
-          dateTime: DateTime(2017, 11, 4),
-          didAnswer: false,
-        ),
-      ];
 
   PostExpectation mockLoadSurveysCall() => when(loadSurveys.load());
 
@@ -45,7 +31,7 @@ void main() {
   setUp(() {
     loadSurveys = LoadSurveysSpy();
     sut = GetxSurveysPresenter(loadSurveys: loadSurveys);
-    mockLoadSurveys(mockValidData());
+    mockLoadSurveys(FakeSurveysMock.makeEntities());
   });
 
   test('should call LoadSurveys on loadData', () async {
@@ -64,13 +50,13 @@ void main() {
           SurveyViewModel(
             id: surveys[0].id,
             question: surveys[0].question,
-            date: DateFormat('dd MMM yyyy').format(DateTime(2020, 2, 20)),
+            date: DateFormat('dd MMM yyyy').format(DateTime(1969, 07, 20)),
             didAnswer: surveys[0].didAnswer,
           ),
           SurveyViewModel(
             id: surveys[1].id,
             question: surveys[1].question,
-            date: DateFormat('dd MMM yyyy').format(DateTime(2017, 11, 4)),
+            date: DateFormat('dd MMM yyyy').format(DateTime(1970, 05, 12)),
             didAnswer: surveys[1].didAnswer,
           ),
         ])));

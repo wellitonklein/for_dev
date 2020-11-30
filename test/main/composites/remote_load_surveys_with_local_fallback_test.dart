@@ -7,6 +7,8 @@ import 'package:for_dev/domain/entities/entities.dart';
 import 'package:for_dev/domain/helpers/helpers.dart';
 import 'package:for_dev/main/composites/composites.dart';
 
+import '../../mocks/mocks.dart';
+
 class RemoteLoadSurveysSpy extends Mock implements RemoteLoadSurveys {}
 
 class LocalLoadSurveysSpy extends Mock implements LocalLoadSurveys {}
@@ -18,19 +20,10 @@ void main() {
   List<SurveyEntity> remoteSurveys;
   List<SurveyEntity> localSurveys;
 
-  List<SurveyEntity> mockSurveys() => [
-        SurveyEntity(
-          id: faker.guid.guid(),
-          question: faker.randomGenerator.string(30, min: 30),
-          dateTime: faker.date.dateTime(),
-          didAnswer: faker.randomGenerator.boolean(),
-        ),
-      ];
-
   PostExpectation mockRemoteLoadCall() => when(remote.load());
 
   void mockRemoteLoad() {
-    remoteSurveys = mockSurveys();
+    remoteSurveys = FakeSurveysMock.makeEntities();
     mockRemoteLoadCall().thenAnswer((_) async => remoteSurveys);
   }
 
@@ -40,7 +33,7 @@ void main() {
   PostExpectation mockLocalLoadCall() => when(local.load());
 
   void mockLocalLoad() {
-    localSurveys = mockSurveys();
+    localSurveys = FakeSurveysMock.makeEntities();
     mockLocalLoadCall().thenAnswer((_) async => localSurveys);
   }
 

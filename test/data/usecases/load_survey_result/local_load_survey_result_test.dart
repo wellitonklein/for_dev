@@ -179,24 +179,6 @@ void main() {
     CacheStorageSpy cacheStorage;
     SurveyResultEntity surveyResult;
 
-    SurveyResultEntity mockSurveyResult() => SurveyResultEntity(
-          surveyId: faker.guid.guid(),
-          question: faker.lorem.sentence(),
-          answers: [
-            SurveyAnswerEntity(
-              image: faker.internet.httpUrl(),
-              answer: faker.lorem.sentence(),
-              isCurrentAnswer: true,
-              percent: 40,
-            ),
-            SurveyAnswerEntity(
-              answer: faker.lorem.sentence(),
-              isCurrentAnswer: false,
-              percent: 60,
-            ),
-          ],
-        );
-
     PostExpectation mockSaveCall() =>
         when(cacheStorage.save(key: anyNamed('key'), value: anyNamed('value')));
 
@@ -205,7 +187,7 @@ void main() {
     setUp(() {
       cacheStorage = CacheStorageSpy();
       sut = LocalLoadSurveyResult(cacheStorage: cacheStorage);
-      surveyResult = mockSurveyResult();
+      surveyResult = FakeSurveyResultMock.makeEntity();
     });
 
     test('should call FetchCacheStorage with correct values', () async {
