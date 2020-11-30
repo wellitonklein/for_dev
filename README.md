@@ -11,14 +11,14 @@
 
 > ## Casos de uso construídos no treinamento
 
-[Cadastro (API)](./requirements/use_cases/remote_add_account.md)
-[Login (API)](./requirements/use_cases/remote_authentication.md)
-[Exibir lista de enquetes (API)](./requirements/use_cases/remote_load_surveys.md)
-[Exibir lista de enquetes (CACHE)](./requirements/use_cases/local_load_surveys.md)
-[Exibir enquete (API)](./requirements/use_cases/remote_load_survey_result.md)
-[Exibir enquete (CACHE)](./requirements/use_cases/local_load_survey_result.md)
-[Carregar pesquisas com fallback local](./requirements/use_cases/remote_load_surveys_with_local_fallback.md)
-[carregar o resultado da pesquisa com fallback local](./requirements/use_cases/remote_load_survey_result_with_local_fallback.md)
+1. [Cadastro (API)](./requirements/use_cases/remote_add_account.md)
+2. [Login (API)](./requirements/use_cases/remote_authentication.md)
+3. [Exibir lista de enquetes (API)](./requirements/use_cases/remote_load_surveys.md)
+4. [Exibir lista de enquetes (CACHE)](./requirements/use_cases/local_load_surveys.md)
+5. [Exibir enquete (API)](./requirements/use_cases/remote_load_survey_result.md)
+6. [Exibir enquete (CACHE)](./requirements/use_cases/local_load_survey_result.md)
+7. [Carregar pesquisas com fallback local](./requirements/use_cases/remote_load_surveys_with_local_fallback.md)
+8. [carregar o resultado da pesquisa com fallback local](./requirements/use_cases/remote_load_survey_result_with_local_fallback.md)
 
 Essa aplicativo faz parte do treinamento do professor Rodrigo Manguinho (Mango) na Udemy.
 
