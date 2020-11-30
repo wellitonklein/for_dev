@@ -8,6 +8,7 @@ import 'package:for_dev/ui/pages/pages.dart';
 import 'package:for_dev/ui/helpers/helpers.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../mocks/mocks.dart';
 import '../helpers/helpers.dart';
 
 class SurveyResultPresenterSpy extends Mock implements ISurveyResultPresenter {}
@@ -38,23 +39,6 @@ void main() {
     isSessionExpiredController.close();
     surveyResultController.close();
   }
-
-  SurveyResultViewModel makeSurveyResult() => SurveyResultViewModel(
-        surveyId: 'Any id',
-        question: 'Question',
-        answers: [
-          SurveyAnswerViewModel(
-            answer: 'Answer 0',
-            isCurrentAnswer: true,
-            percent: '60%',
-          ),
-          SurveyAnswerViewModel(
-            answer: 'Answer 1',
-            isCurrentAnswer: false,
-            percent: '40%',
-          ),
-        ],
-      );
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = SurveyResultPresenterSpy();
@@ -157,7 +141,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    surveyResultController.add(makeSurveyResult());
+    surveyResultController.add(FakeSurveyResultMock.makeViewModel());
     await provideMockedNetworkImages(() async {
       await tester.pump();
     });
@@ -170,7 +154,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    surveyResultController.add(makeSurveyResult());
+    surveyResultController.add(FakeSurveyResultMock.makeViewModel());
     await provideMockedNetworkImages(() async {
       await tester.pump();
     });

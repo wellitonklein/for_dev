@@ -8,6 +8,7 @@ import 'package:for_dev/ui/helpers/errors/errors.dart';
 import 'package:for_dev/ui/pages/pages.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../mocks/mocks.dart';
 import '../helpers/helpers.dart';
 
 class SurveysPresenterSpy extends Mock implements ISurveysPresenter {}
@@ -53,21 +54,6 @@ void main() {
       page: () => SurveysPage(presenter: presenter),
     ));
   }
-
-  List<SurveyViewModel> makeSurveys() => [
-        SurveyViewModel(
-          id: '1',
-          question: 'Question 1',
-          date: 'Date 1',
-          didAnswer: true,
-        ),
-        SurveyViewModel(
-          id: '2',
-          question: 'Question 2',
-          date: 'Date 2',
-          didAnswer: false,
-        ),
-      ];
 
   tearDown(() {
     closeStreams();
@@ -128,7 +114,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    surveysController.add(makeSurveys());
+    surveysController.add(FakeSurveysMock.makeViewModel());
     await tester.pump();
     expect(
       find.text('Algo de errado aconteceu. Tente novamente em breve.'),
@@ -143,7 +129,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    surveysController.add(makeSurveys());
+    surveysController.add(FakeSurveysMock.makeViewModel());
     await tester.pump();
     expect(
       find.text('Algo de errado aconteceu. Tente novamente em breve.'),
@@ -171,7 +157,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    surveysController.add(makeSurveys());
+    surveysController.add(FakeSurveysMock.makeViewModel());
     await tester.pump();
 
     await tester.tap(find.text('Question 1'));

@@ -15,10 +15,10 @@ mixin AuthMixin on GetxController {
   set password(String value) => _password = value;
 
   Stream<UIError> get emailErrorStream => _emailError.stream;
-  set emailError(UIError value) => _emailError.value = value;
+  set emailError(UIError value) => _emailError.subject.add(value);
   UIError get emailError => _emailError.value;
 
   Stream<UIError> get passwordErrorStream => _passwordError.stream;
-  set passwordError(UIError value) => _passwordError.value = value;
+  set passwordError(UIError value) => _passwordError.subject.add(value);
   UIError get passwordError => _passwordError.value;
 }

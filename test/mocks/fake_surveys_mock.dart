@@ -1,5 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:for_dev/domain/entities/entities.dart';
+import 'package:for_dev/ui/pages/pages.dart';
 
 class FakeSurveysMock {
   static List<Map> makeCacheJson() {
@@ -69,6 +70,23 @@ class FakeSurveysMock {
         question: faker.randomGenerator.string(50, min: 10),
         dateTime: DateTime.utc(1970, 05, 12),
         didAnswer: true,
+      ),
+    ];
+  }
+
+  static List<SurveyViewModel> makeViewModel() {
+    return [
+      SurveyViewModel(
+        id: '1',
+        question: 'Question 1',
+        date: 'Date 1',
+        didAnswer: true,
+      ),
+      SurveyViewModel(
+        id: '2',
+        question: 'Question 2',
+        date: 'Date 2',
+        didAnswer: false,
       ),
     ];
   }
